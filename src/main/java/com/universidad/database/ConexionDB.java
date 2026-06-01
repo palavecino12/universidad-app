@@ -1,8 +1,8 @@
 /**
  * Esta clase es la encargada de abrir conexiones con la base de datos.
  * Utiliza la configuración definida en DatabaseConfig.
- * Los DAO utilizarán esta clase para obtener conexiones
- * y ejecutar consultas SQL.
+ * Los DAO utilizarán esta clase para obtener conexiones y ejecutar consultas SQL.
+ * java.sql forma parte de JDBC.
  */
 package com.universidad.database;
 
