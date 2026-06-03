@@ -6,10 +6,14 @@ public class Docente extends Persona {
 
     private String especialidad;
 
+    public Docente(String nombre,String apellido,String ci,String especialidad){
+        super(nombre,apellido,ci);
+        this.especialidad=especialidad;
+    }
+
     public String getEspecialidad(){
         return especialidad;
     }
-
     public void setEspecialidad(String especialidad){
         this.especialidad=especialidad;
     }

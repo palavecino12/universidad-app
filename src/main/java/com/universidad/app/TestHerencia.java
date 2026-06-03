@@ -6,12 +6,7 @@ public class TestHerencia {
 
     public static void main(String[] args) {
 
-        Docente docente = new Docente();
-
-        docente.setNombre("Facundo");
-        docente.setApellido("Palavecino");
-        docente.setCi("12345678");
-        docente.setEspecialidad("Programacion");
+        Docente docente = new Docente("Facundo","Palavecino","12345678","Programacion");
 
         docente.mostrarInfo();
 
