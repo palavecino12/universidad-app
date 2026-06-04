@@ -24,5 +24,10 @@
         </dependency>
 
     </dependencies>
+Alumno alumno = new Alumno();
 
+Materia materia = new Materia();
+
+System.out.println(alumno);
+System.out.println(materia);
 </project>

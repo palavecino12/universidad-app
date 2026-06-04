@@ -1,4 +1,19 @@
 package com.universidad.dao;
 
-public class MateriaDAO {
+import com.universidad.clases.Materia;
+import java.util.List;
+
+public interface MateriaDAO {
+
+    void crearMateria(Materia materia);
+
+    Materia buscarPorId(int id);
+
+    Materia buscarPorCodigo(String codigo);
+
+    List<Materia> listarMaterias();
+
+    void modificarMateria(Materia materia);
+
+    void eliminarMateria(int id);
 }
