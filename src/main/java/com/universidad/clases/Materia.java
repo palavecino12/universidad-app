@@ -2,34 +2,19 @@ package com.universidad.clases;
 
 public class Materia {
 
-    private int id;
     private String nombre;
     private String codigo;
     private int cupoMaximo;
-    private int idDocente;
+    private Docente docente;
 
     public Materia() {
     }
 
-    public Materia(int id,
-                   String nombre,
-                   String codigo,
-                   int cupoMaximo,
-                   int idDocente) {
-
-        this.id = id;
+    public Materia(String nombre, String codigo, int cupoMaximo, Docente docente) {
         this.nombre = nombre;
         this.codigo = codigo;
         this.cupoMaximo = cupoMaximo;
-        this.idDocente = idDocente;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+        this.docente = docente;
     }
 
     public String getNombre() {
@@ -56,13 +41,15 @@ public class Materia {
         this.cupoMaximo = cupoMaximo;
     }
 
-    public int getIdDocente() {
-        return idDocente;
+    public Docente getDocente() {
+        return docente;
     }
 
-    public void setIdDocente(int idDocente) {
-        this.idDocente = idDocente;
+    public void setDocente(Docente docente) {
+        this.docente = docente;
     }
+
+    
 
     @Override
     public String toString() {

@@ -7,13 +7,11 @@ public interface MateriaDAO {
 
     void crearMateria(Materia materia);
 
-    Materia buscarPorId(int id);
-
     Materia buscarPorCodigo(String codigo);
 
     List<Materia> listarMaterias();
 
     void modificarMateria(Materia materia);
 
-    void eliminarMateria(int id);
+    void eliminarMateria(String codigo);
 }
