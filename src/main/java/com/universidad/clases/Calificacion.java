@@ -1,10 +1,3 @@
-/**
- * En la consiga, en el listado de clases tenemos:
- * Calificacion con el atributo "materia" mas el resto
- * pero en la base de datos tenemos que calificacion se relaciona con inscripcion
- * por lo tanto calificacion llevaria como atributo inscripcion y no materia
- * ademas se puede sacar materia de inscripcion
- */
 package com.universidad.clases;
 
 public class Calificacion {
@@ -12,23 +5,23 @@ public class Calificacion {
     private int id;
     private double nota;
     private String fecha;
-    private Inscripcion inscripcion;
+    private Materia materia;
 
-    //Constructor para crear una nueva calificaion.
+    //Constructor para crear una nueva calificacion.
     //No recibe id porque la db lo genera automáticamente.
-    public Calificacion(double nota, String fecha, Inscripcion inscripcion) {
+    public Calificacion(double nota, String fecha, Materia materia) {
         this.nota = nota;
         this.fecha = fecha;
-        this.inscripcion = inscripcion;
+        this.materia = materia;
     }
 
     //Constructor para el momento traer una calificacion de la db.
     //Este si recibe id porque lo trae de la db.
-    public Calificacion(int id, double nota, String fecha, Inscripcion inscripcion) {
+    public Calificacion(int id, double nota, String fecha, Materia materia) {
         this.id = id;
         this.nota = nota;
         this.fecha = fecha;
-        this.inscripcion = inscripcion;
+        this.materia = materia;
     }
 
     public boolean esAprobado() {
@@ -53,10 +46,10 @@ public class Calificacion {
         this.fecha=fecha;
     }
 
-    public Inscripcion getInscripcion(){
-        return this.inscripcion;
+    public Materia getMateria(){
+        return this.materia;
     }
-    public void setInscripcion(Inscripcion inscripcion){
-        this.inscripcion=inscripcion;
+    public void setMateria(Materia materia){
+        this.materia = materia;
     }
 }

@@ -1,7 +1,5 @@
 package com.universidad.clases;
 
-import com.universidad.clases.Persona;
-
 public class Docente extends Persona {
 
     private String especialidad;
@@ -19,11 +17,15 @@ public class Docente extends Persona {
     }
 
     @Override
-    public void mostrarInfo(){
-        System.out.println("Nombre: "+getNombre());
-        System.out.println("Apellido: "+getApellido());
-        System.out.println("CI: "+getCi());
-        System.out.println("Especialidad: "+especialidad);
+    public void mostrarInfo() {
 
+        System.out.println("\n===== INFORMACIÓN DEL DOCENTE =====");
+
+        System.out.println("Nombre: " + getNombre());
+        System.out.println("Apellido: " + getApellido());
+        System.out.println("CI: " + getCi());
+        System.out.println("Especialidad: " + especialidad);
+
+        System.out.println("==================================");
     }
 }
