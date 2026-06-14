@@ -34,6 +34,14 @@ public class Materia {
         this.cupoMaximo = cupoMaximo;
     }
 
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
+    public void setAlumnosInscriptos(ArrayList<Alumno> alumnosInscriptos) {
+        this.alumnosInscriptos = alumnosInscriptos;
+    }
+
     public ArrayList<Alumno> getAlumnosInscriptos() {
         return alumnosInscriptos;
     }
@@ -47,22 +55,12 @@ public class Materia {
     }
 
     public void mostrarAlumnosInscriptos() {
-
         if (alumnosInscriptos.isEmpty()) {
-
             System.out.println("No hay alumnos inscriptos.");
-
             return;
         }
-
         for (Alumno alumno : alumnosInscriptos) {
-
-            System.out.println(
-                    alumno.getNombre()
-                            + " "
-                            + alumno.getApellido()
-            );
-
+            System.out.println(alumno.getNombre()+ " " + alumno.getApellido());
         }
     }
 }
