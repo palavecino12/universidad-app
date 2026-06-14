@@ -17,7 +17,9 @@ public class AlumnoDAO {
                 VALUES (?, ?, ?, ?)
                 """;
 
-        try (Connection con = ConexionDB.obtenerConexion(); PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = ConexionDB.getConexion();
+             PreparedStatement ps = con.prepareStatement(sql)
+        ) {
 
             ps.setString(1, alumno.getNombre());
             ps.setString(2, alumno.getApellido());
@@ -40,7 +42,7 @@ public class AlumnoDAO {
         String sql
                 = "SELECT * FROM alumno WHERE ci=?";
 
-        try (Connection con = ConexionDB.obtenerConexion(); PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = ConexionDB.getConexion(); PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, ci);
 
@@ -77,7 +79,7 @@ public class AlumnoDAO {
         String sql
                 = "SELECT * FROM alumno";
 
-        try (Connection con = ConexionDB.obtenerConexion(); Statement st = con.createStatement()) {
+        try (Connection con = ConexionDB.getConexion(); Statement st = con.createStatement()) {
 
             ResultSet rs = st.executeQuery(sql);
 
@@ -129,7 +131,7 @@ public class AlumnoDAO {
                 WHERE ci=?
                 """;
 
-        try (Connection con = ConexionDB.obtenerConexion(); PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = ConexionDB.getConexion(); PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, alumno.getNombre());
             ps.setString(2, alumno.getApellido());
@@ -151,7 +153,7 @@ public class AlumnoDAO {
         String sql
                 = "DELETE FROM alumno WHERE ci=?";
 
-        try (Connection con = ConexionDB.obtenerConexion(); PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = ConexionDB.getConexion(); PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, ci);
 
