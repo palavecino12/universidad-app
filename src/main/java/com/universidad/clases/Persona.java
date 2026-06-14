@@ -30,6 +30,10 @@ public abstract class Persona {
         return ci;
     }
 
+    public void setCi(String ci) {
+        this.ci = ci;
+    }
+
     public abstract void mostrarInfo();
 }
 
