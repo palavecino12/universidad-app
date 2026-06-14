@@ -17,9 +17,7 @@ public class AlumnoDAO {
                 VALUES (?, ?, ?, ?)
                 """;
 
-        try (Connection con = ConexionDB.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)
-        ) {
+        try (Connection con = ConexionDB.getConexion(); PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, alumno.getNombre());
             ps.setString(2, alumno.getApellido());
@@ -50,11 +48,7 @@ public class AlumnoDAO {
 
             if (rs.next()) {
 
-                Alumno alumno = new Alumno(
-                        rs.getString("nombre"),
-                        rs.getString("apellido"),
-                        rs.getString("ci"),
-                        rs.getString("fechaNacimiento"),
+                Alumno alumno = new Alumno(rs.getString("nombre"), rs.getString("apellido"), rs.getString("ci"), rs.getString("fechaNacimiento"),
                         rs.getString("email")
                 );
 
@@ -164,6 +158,85 @@ public class AlumnoDAO {
             e.printStackTrace();
 
         }
+
+    }
+
+    public List<Alumno> buscarPorNombreApellido(String texto) {
+        List<Alumno> alumnos = new ArrayList<>();
+        String sql = """
+            SELECT *
+            FROM alumno
+            WHERE LOWER(nombre) LIKE ?
+            OR LOWER(apellido) LIKE ?
+            """;
+
+        try (Connection con = ConexionDB.getConexion(); PreparedStatement ps = con.prepareStatement(sql)) {
+            String busqueda = "%" + texto.toLowerCase() + "%";
+            ps.setString(1, busqueda);
+            ps.setString(2, busqueda);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Alumno alumno = new Alumno(
+                        rs.getString("nombre"),
+                        rs.getString("apellido"),
+                        rs.getString("ci"),
+                        rs.getString("fechaNacimiento"),
+                        rs.getString("email")
+                );
+                alumnos.add(alumno);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return alumnos;
+
+    }
+
+    public List<Alumno> listarPorEstadoAcademico(String estado) {
+        List<Alumno> alumnos = new ArrayList<>();
+        String sql = "";
+        if (estado.equalsIgnoreCase("aprobado")) {
+
+            sql = """
+        SELECT DISTINCT a.*
+        FROM alumno a
+        INNER JOIN calificacion c
+        ON a.ci = c.ci_alumno
+        WHERE c.nota >= 6
+        """;
+
+        } else if (estado.equalsIgnoreCase("desaprobado")) {
+
+            sql = """
+        SELECT DISTINCT a.*
+        FROM alumno a
+        INNER JOIN calificacion c
+        ON a.ci = c.ci_alumno
+        WHERE c.nota < 6
+        """;
+
+        } else if (estado.equalsIgnoreCase("sin calificacion")) {
+
+            sql = """
+        SELECT a.*
+        FROM alumno a
+        LEFT JOIN calificacion c
+        ON a.ci = c.ci_alumno
+        WHERE c.id IS NULL
+        """;
+
+        }
+
+        try (Connection con = ConexionDB.getConexion(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Alumno alumno = new Alumno(rs.getString("nombre"),rs.getString("apellido"),rs.getString("ci"),rs.getString("fechaNacimiento"),rs.getString("email"));
+                alumnos.add(alumno);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return alumnos;
 
     }
 

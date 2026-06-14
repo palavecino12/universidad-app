@@ -18,7 +18,7 @@ public class InscripcionesDAO {
         VALUES (?, ?, ?)
         """;
 
-        try (Connection con = ConexionDB.obtenerConexion(); PreparedStatement ps
+        try (Connection con = ConexionDB.getConexion(); PreparedStatement ps
                 = con.prepareStatement(sql)) {
 
             ps.setString(1,inscripcion.getAlumno().getCi());
