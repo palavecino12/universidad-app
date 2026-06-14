@@ -28,6 +28,7 @@ public class Alumno extends Persona implements Inscribible {
         this.calificaciones = new ArrayList<>();
     }
 
+ 
 
     public String getFechaNacimiento() {
         return fechaNacimiento;

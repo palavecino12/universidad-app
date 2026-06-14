@@ -1,18 +1,19 @@
 package com.universidad.app;
 
+import com.universidad.clases.Alumno;
 import com.universidad.dao.AlumnoDAO;
+import com.universidad.exceptions.AlumnoDuplicadoException;
 import com.universidad.gestores.GestorAlumnos;
 import java.util.Scanner;
 
 public class SistemGestion {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws AlumnoDuplicadoException {
         Scanner leer = new Scanner(System.in);
 
         AlumnoDAO alumnoDAO = new AlumnoDAO();
 
-        GestorAlumnos gestorAlumnos
-                = new GestorAlumnos(alumnoDAO);
+        GestorAlumnos gestorAlumnos = new GestorAlumnos(alumnoDAO);
         int opcion;
         do {
 
@@ -48,7 +49,7 @@ public class SistemGestion {
 
     }
 
-    public static void menuAlumnos(GestorAlumnos gestor) {
+    public static void menuAlumnos(GestorAlumnos gestor) throws AlumnoDuplicadoException {
 
         Scanner leer = new Scanner(System.in);
 
@@ -65,36 +66,7 @@ public class SistemGestion {
             System.out.println("0. Volver");
 
             opcion = leer.nextInt();
-
-            switch (opcion) {
-
-                case 3:
-
-                    gestor.listarAlumnos();
-
-                    break;
-
-                case 2:
-
-                    System.out.print("CI: ");
-
-                    String ci = leer.next();
-
-                    System.out.println(
-                            gestor.buscarPorCI(ci)
-                    );
-
-                    break;
-
-                case 0:
-
-                    break;
-
-                default:
-
-                    System.out.println("Opcion no implementada");
-
-            }
+           
 
         } while (opcion != 0);
     }
