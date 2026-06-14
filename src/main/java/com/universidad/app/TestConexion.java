@@ -9,7 +9,7 @@ public class TestConexion {
 
         try {
 
-            Connection conexion = ConexionDB.obtenerConexion();
+            Connection conexion = ConexionDB.getConexion();
 
             System.out.println("Conectado correctamente");
 

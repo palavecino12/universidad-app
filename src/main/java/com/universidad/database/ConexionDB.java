@@ -12,7 +12,7 @@ import java.sql.SQLException;    //Error relacionado con operaciones SQL.
 
 public class ConexionDB {
 
-    public static Connection obtenerConexion()//Metodo que va a crear la conexion y retornarla.
+    public static Connection getConexion()//Metodo que va a crear la conexion y retornarla.
             throws SQLException {
 
         //Intenta conectarse utilizando la URL, usuario y contraseña configurados.
