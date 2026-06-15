@@ -6,14 +6,6 @@ public class Calificacion {
     private double nota;
     private String fecha;
     private Materia materia;
-
-    public Alumno getAlumno() {
-        return alumno;
-    }
-
-    public void setAlumno(Alumno alumno) {
-        this.alumno = alumno;
-    }
     //agregue alumno porque en el uml sale y en los constructores igual
     private Alumno alumno;
 
@@ -33,6 +25,13 @@ public class Calificacion {
         this.nota = nota;
         this.fecha = fecha;
         this.materia = materia;
+        this.alumno = alumno;
+    }
+
+    public Alumno getAlumno() {
+        return alumno;
+    }
+    public void setAlumno(Alumno alumno) {
         this.alumno = alumno;
     }
 
