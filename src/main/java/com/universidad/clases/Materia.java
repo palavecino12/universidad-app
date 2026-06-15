@@ -4,12 +4,23 @@ import java.util.ArrayList;
 
 public class Materia {
 
+    private int id;
     private String nombre;
     private String codigo;
     private int cupoMaximo;
     private ArrayList<Alumno> alumnosInscriptos;
 
+    // Para crear una materia nueva
     public Materia(String nombre, String codigo, int cupoMaximo) {
+        this.nombre = nombre;
+        this.codigo = codigo;
+        this.cupoMaximo = cupoMaximo;
+        this.alumnosInscriptos = new ArrayList<>();
+    }
+
+    // Para traer una materia desde la BD
+    public Materia(int id, String nombre, String codigo, int cupoMaximo) {
+        this.id = id;
         this.nombre = nombre;
         this.codigo = codigo;
         this.cupoMaximo = cupoMaximo;
@@ -26,6 +37,9 @@ public class Materia {
     public String getCodigo() {
         return codigo;
     }
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
 
     public int getCupoMaximo() {
         return cupoMaximo;
@@ -34,16 +48,18 @@ public class Materia {
         this.cupoMaximo = cupoMaximo;
     }
 
-    public void setCodigo(String codigo) {
-        this.codigo = codigo;
+    public ArrayList<Alumno> getAlumnosInscriptos() {
+        return alumnosInscriptos;
     }
-
     public void setAlumnosInscriptos(ArrayList<Alumno> alumnosInscriptos) {
         this.alumnosInscriptos = alumnosInscriptos;
     }
 
-    public ArrayList<Alumno> getAlumnosInscriptos() {
-        return alumnosInscriptos;
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getCupoDisponible() {
@@ -62,5 +78,14 @@ public class Materia {
         for (Alumno alumno : alumnosInscriptos) {
             System.out.println(alumno.getNombre()+ " " + alumno.getApellido());
         }
+    }
+
+    //Modificamos el metodo por defecto del objeto para poder mostrar la informacion mas facil mas adelante.
+    @Override
+    public String toString() {
+        return "Nombre: " + nombre
+                + " | Codigo: " + codigo
+                + " | Cupo Maximo: " + cupoMaximo
+                + " | Inscriptos: " + alumnosInscriptos.size();
     }
 }

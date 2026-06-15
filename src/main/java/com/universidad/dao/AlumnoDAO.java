@@ -11,20 +11,19 @@ public class AlumnoDAO {
 
     public void crearAlumno(Alumno alumno) {
 
-        String sql = """
-                INSERT INTO alumno
-                (nombre, apellido, ci, email)
-                VALUES (?, ?, ?, ?)
-                """;
+        String sql = " INSERT INTO alumnos (nombre, apellido, ci, fecha_nacimiento, email) VALUES (?, ?, ?, ?,?)";
 
         try (Connection con = ConexionDB.getConexion(); PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, alumno.getNombre());
             ps.setString(2, alumno.getApellido());
             ps.setString(3, alumno.getCi());
-            ps.setString(4, alumno.getEmail());
+            ps.setString(4, alumno.getFechaNacimiento());
+            ps.setString(5, alumno.getEmail());
 
             ps.executeUpdate();
+
+            System.out.println("Alumno creado con exito");
 
         } catch (SQLException e) {
 
@@ -38,7 +37,7 @@ public class AlumnoDAO {
     public Alumno buscarPorCI(String ci) {
 
         String sql
-                = "SELECT * FROM alumno WHERE ci=?";
+                = "SELECT * FROM alumnos WHERE ci=?";
 
         try (Connection con = ConexionDB.getConexion(); PreparedStatement ps = con.prepareStatement(sql)) {
 
@@ -48,7 +47,12 @@ public class AlumnoDAO {
 
             if (rs.next()) {
 
-                Alumno alumno = new Alumno(rs.getString("nombre"), rs.getString("apellido"), rs.getString("ci"), rs.getString("fechaNacimiento"),
+                Alumno alumno = new Alumno(
+                        rs.getInt("id"),
+                        rs.getString("nombre"),
+                        rs.getString("apellido"),
+                        rs.getString("ci"),
+                        rs.getString("fecha_nacimiento"),
                         rs.getString("email")
                 );
 
@@ -71,7 +75,7 @@ public class AlumnoDAO {
         List<Alumno> alumnos = new ArrayList<>();
 
         String sql
-                = "SELECT * FROM alumno";
+                = "SELECT * FROM alumnos";
 
         try (Connection con = ConexionDB.getConexion(); Statement st = con.createStatement()) {
 
@@ -83,7 +87,7 @@ public class AlumnoDAO {
                         rs.getString("nombre"),
                         rs.getString("apellido"),
                         rs.getString("ci"),
-                        rs.getString("fechaNacimiento"),
+                        rs.getString("fecha_nacimiento"),
                         rs.getString("email")
                 );
 
@@ -119,11 +123,7 @@ public class AlumnoDAO {
 
     public void modificarAlumno(Alumno alumno) {
 
-        String sql = """
-                UPDATE alumno
-                SET nombre=?, apellido=?, email=?
-                WHERE ci=?
-                """;
+        String sql = "UPDATE alumnos SET nombre=?, apellido=?, email=? WHERE ci=?";
 
         try (Connection con = ConexionDB.getConexion(); PreparedStatement ps = con.prepareStatement(sql)) {
 
@@ -145,13 +145,15 @@ public class AlumnoDAO {
     public void eliminarAlumno(String ci) {
 
         String sql
-                = "DELETE FROM alumno WHERE ci=?";
+                = "DELETE FROM alumnos WHERE ci=?";
 
         try (Connection con = ConexionDB.getConexion(); PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, ci);
 
             ps.executeUpdate();
+
+            System.out.println("Alumno eliminado con exito");
 
         } catch (SQLException e) {
 
@@ -163,12 +165,7 @@ public class AlumnoDAO {
 
     public List<Alumno> buscarPorNombreApellido(String texto) {
         List<Alumno> alumnos = new ArrayList<>();
-        String sql = """
-            SELECT *
-            FROM alumno
-            WHERE LOWER(nombre) LIKE ?
-            OR LOWER(apellido) LIKE ?
-            """;
+        String sql = "SELECT * FROM alumnos WHERE LOWER(nombre) LIKE ? OR LOWER(apellido) LIKE ?";
 
         try (Connection con = ConexionDB.getConexion(); PreparedStatement ps = con.prepareStatement(sql)) {
             String busqueda = "%" + texto.toLowerCase() + "%";
@@ -180,7 +177,7 @@ public class AlumnoDAO {
                         rs.getString("nombre"),
                         rs.getString("apellido"),
                         rs.getString("ci"),
-                        rs.getString("fechaNacimiento"),
+                        rs.getString("fecha_nacimiento"),
                         rs.getString("email")
                 );
                 alumnos.add(alumno);
@@ -199,7 +196,7 @@ public class AlumnoDAO {
 
             sql = """
         SELECT DISTINCT a.*
-        FROM alumno a
+        FROM alumnos a
         INNER JOIN calificacion c
         ON a.ci = c.ci_alumno
         WHERE c.nota >= 6
@@ -209,7 +206,7 @@ public class AlumnoDAO {
 
             sql = """
         SELECT DISTINCT a.*
-        FROM alumno a
+        FROM alumnos a
         INNER JOIN calificacion c
         ON a.ci = c.ci_alumno
         WHERE c.nota < 6
@@ -219,7 +216,7 @@ public class AlumnoDAO {
 
             sql = """
         SELECT a.*
-        FROM alumno a
+        FROM alumnos a
         LEFT JOIN calificacion c
         ON a.ci = c.ci_alumno
         WHERE c.id IS NULL
@@ -230,7 +227,7 @@ public class AlumnoDAO {
         try (Connection con = ConexionDB.getConexion(); PreparedStatement ps = con.prepareStatement(sql)) {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                Alumno alumno = new Alumno(rs.getString("nombre"),rs.getString("apellido"),rs.getString("ci"),rs.getString("fechaNacimiento"),rs.getString("email"));
+                Alumno alumno = new Alumno(rs.getString("nombre"),rs.getString("apellido"),rs.getString("ci"),rs.getString("fecha_nacimiento"),rs.getString("email"));
                 alumnos.add(alumno);
             }
         } catch (SQLException e) {

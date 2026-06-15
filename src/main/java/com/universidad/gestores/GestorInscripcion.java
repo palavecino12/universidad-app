@@ -10,14 +10,6 @@ import java.util.List;
 
 public class GestorInscripcion {
 
-    private final InscripcionesDAO inscripcionDAO;
 
-    public GestorInscripcion(InscripcionesDAO inscripcionesDAO) {
-
-        this.inscripcionDAO = inscripcionesDAO;
-
-    }
-
-    public void inscribirAlumno(Alumno alumno, Materia materia) {
         
     }

@@ -47,11 +47,12 @@ public class MateriaDAO {
             //Retorna true o false si encontro algo o no
             if (rs.next()) {
 
+                int id = rs.getInt("id");
                 String nombre = rs.getString("nombre");
                 String codigoMateria = rs.getString("codigo");
                 int cupo = rs.getInt("cupo_maximo");
 
-                return new Materia(nombre, codigoMateria, cupo);
+                return new Materia(id, nombre, codigoMateria, cupo);
             }
 
         } catch (SQLException e) {

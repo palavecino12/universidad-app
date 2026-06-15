@@ -1,7 +1,10 @@
 package com.universidad.app;
 
 import com.universidad.clases.Alumno;
+import com.universidad.clases.Materia;
 import com.universidad.gestores.GestorAlumnos;
+import com.universidad.gestores.GestorMaterias;
+
 import java.util.List;
 import java.util.Scanner;
 
@@ -46,11 +49,11 @@ public class Menu {
                     String ciModificar = leer.next();
                     Alumno modificar = gestorAlumnos.buscarPorCI(ciModificar);
                     if (modificar != null) {
-                        System.out.print("Nombre: ");
+                        System.out.print("Nuevo Nombre: ");
                         modificar.setNombre(leer.next());
-                        System.out.print("Apellido: ");
+                        System.out.print("Nuevo Apellido: ");
                         modificar.setApellido(leer.next());
-                        System.out.print("Email: ");
+                        System.out.print("Nuevo Email: ");
                         modificar.setEmail(leer.next());
                         gestorAlumnos.modificarAlumno(modificar);
                     } else {
@@ -92,6 +95,123 @@ public class Menu {
     }
 
     public void menuMaterias() {
+
+        GestorMaterias gestorMaterias = new GestorMaterias();
+
+        do {
+
+            System.out.println("\n--- MENU MATERIAS ---");
+            System.out.println("1. Registrar materia");
+            System.out.println("2. Modificar materia");
+            System.out.println("3. Eliminar materia");
+            System.out.println("4. Listar materias");
+            System.out.println("0. Volver");
+
+            option = leer.nextInt();
+
+            switch (option) {
+
+                case 1:
+                    leer.nextLine();
+
+                    System.out.print("Nombre: ");
+                    String nombre = leer.nextLine();
+
+                    System.out.print("Codigo: ");
+                    String codigo = leer.nextLine();
+
+                    System.out.print("Cupo maximo: ");
+                    int cupo = leer.nextInt();
+
+                    Materia materia = new Materia(nombre,codigo,cupo);
+
+                    gestorMaterias.registrarMateria(materia);
+                    break;
+
+                case 2:
+                    System.out.print("Codigo de la materia: ");
+
+                    String codigoModificar =
+                            leer.next();
+
+                    Materia modificar =
+                            gestorMaterias.buscarPorCodigo(
+                                    codigoModificar
+                            );
+
+                    if (modificar != null) {
+
+                        leer.nextLine();
+
+                        System.out.print("Nuevo nombre: ");
+                        modificar.setNombre(
+                                leer.nextLine()
+                        );
+
+                        System.out.print("Nuevo cupo maximo: ");
+                        modificar.setCupoMaximo(
+                                leer.nextInt()
+                        );
+
+                        gestorMaterias.modificarMateria(
+                                modificar
+                        );
+
+                    } else {
+
+                        System.out.println(
+                                "Materia no encontrada"
+                        );
+
+                    }
+
+                    break;
+
+                case 3:
+                    System.out.print("Codigo: ");
+
+                    String codigoEliminar =
+                            leer.next();
+
+                    gestorMaterias.eliminarMateria(
+                            codigoEliminar
+                    );
+                    break;
+
+                case 4:
+                    List<Materia> materias =
+                            gestorMaterias.listarMaterias();
+
+                    if (materias.isEmpty()) {
+
+                        System.out.println(
+                                "No hay materias registradas."
+                        );
+
+                    } else {
+
+                        System.out.println(
+                                "--- LISTA DE MATERIAS ---"
+                        );
+
+                        for (Materia m : materias) {
+
+                            System.out.println(m);
+
+                        }
+
+                    }
+                    break;
+
+                case 0:
+                    System.out.println("Volviendo...");
+                    break;
+
+                default:
+                    System.out.println("Opcion incorrecta");
+            }
+
+        } while (option != 0);
     }
 
     public void menuInscripciones() {

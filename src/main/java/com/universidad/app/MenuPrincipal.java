@@ -18,10 +18,15 @@ public class MenuPrincipal {
                 + "5. Consultas\n"
                 + "\n"
                 + "0. Salir");
+
         opcion = leer.nextInt();
+
         switch(opcion){
             case 1:
                 menu.menuAlumnos();
+                break;
+            case 2:
+                menu.menuMaterias();
                 break;
         }
         

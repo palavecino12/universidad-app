@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 public class Alumno extends Persona implements Inscribible {
 
+    private int id;
     private String fechaNacimiento;
     private String email;
     private ArrayList<Materia> materiasInscriptas;
@@ -18,12 +19,23 @@ public class Alumno extends Persona implements Inscribible {
      *
      * Las inicializamos vacías.
      */
+
+    // Para crear un nuevo alumno
     public Alumno(String nombre, String apellido, String ci, String fechaNacimiento, String email) {
         super(nombre, apellido, ci);
 
         this.fechaNacimiento = fechaNacimiento;
         this.email = email;
+        this.materiasInscriptas = new ArrayList<>();
+        this.calificaciones = new ArrayList<>();
+    }
 
+    // Para traer un alumno desde la BD
+    public Alumno(int id, String nombre, String apellido, String ci, String fechaNacimiento, String email) {
+        super(nombre, apellido, ci);
+        this.id = id;
+        this.fechaNacimiento = fechaNacimiento;
+        this.email = email;
         this.materiasInscriptas = new ArrayList<>();
         this.calificaciones = new ArrayList<>();
     }
@@ -56,6 +68,13 @@ public class Alumno extends Persona implements Inscribible {
     }
     public void setCalificaciones(ArrayList<Calificacion> calificaciones) {
         this.calificaciones = calificaciones;
+    }
+
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Override
@@ -154,5 +173,14 @@ public class Alumno extends Persona implements Inscribible {
 
         materiasInscriptas.remove(materia);
 
+    }
+
+    //Modificamos el metodo por defecto del objeto para poder mostrar la informacion mas facil mas adelante.
+    @Override
+    public String toString() {
+        return "Nombre: " + getNombre()
+                + " | Apellido: " + getApellido()
+                + " | CI: " + getCi()
+                + " | Email: " + email;
     }
 }

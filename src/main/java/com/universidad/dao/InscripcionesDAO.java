@@ -10,33 +10,37 @@ import java.util.List;
 public class InscripcionesDAO {
 
     public void crearInscripcion(Inscripcion inscripcion) {
+        String sql =
+                "INSERT INTO inscripciones " +
+                        "(id_alumno, id_materia, fecha_inscripcion) " +
+                        "VALUES (?, ?, ?)";
 
-        String sql
-                = """
-        INSERT INTO inscripcion
-        (ci_alumno, codigo_materia, fechaInscripcion)
-        VALUES (?, ?, ?)
-        """;
+        try (
+                Connection conexion = ConexionDB.getConexion();
+                PreparedStatement stmt = conexion.prepareStatement(sql)
+        ) {
 
-        try (Connection con = ConexionDB.getConexion(); PreparedStatement ps
-                = con.prepareStatement(sql)) {
+            stmt.setInt(1, inscripcion.getAlumno().getId());
 
-            ps.setString(1,inscripcion.getAlumno().getCi());
-            ps.setString(2,inscripcion.getMateria().getCodigo());
-            ps.setString(3, inscripcion.getFechaInscripcion());
-            ps.executeUpdate();
+            stmt.setInt(2, inscripcion.getMateria().getId());
+
+            stmt.setString(3, inscripcion.getFechaInscripcion());
+
+            stmt.executeUpdate();
+
+            System.out.println("Inscripción registrada correctamente.");
 
         } catch (SQLException e) {
+
             e.printStackTrace();
+
         }
-
     }
 
-    public List<Inscripcion> listarInscripciones() {
-        
-        List<Inscripcion> lista = new ArrayList<>();
-        return lista;
+    public void eliminarInscripcion(int idAlumno, int idMateria) {}
 
-    }
+    public Inscripcion buscarInscripcion(int idAlumno, int idMateria) {}
+
+    public List<Inscripcion> listarPorMateria(int idMateria) {}
 
 }
