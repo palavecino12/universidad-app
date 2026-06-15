@@ -1,9 +1,14 @@
 package com.universidad.app;
 
 import com.universidad.clases.Alumno;
+import com.universidad.clases.Calificacion;
 import com.universidad.clases.Materia;
+import com.universidad.exceptions.AlumnoNoEncontradoException;
+import com.universidad.exceptions.MateriaNoEncontradaException;
 import com.universidad.gestores.GestorAlumnos;
+import com.universidad.gestores.GestorCalificaciones;
 import com.universidad.gestores.GestorMaterias;
+import java.time.LocalDate;
 
 import java.util.List;
 import java.util.Scanner;
@@ -12,9 +17,12 @@ public class Menu {
 
     private Scanner leer = new Scanner(System.in);
     int option;
+    GestorAlumnos gestorAlumnos = new GestorAlumnos();
+    GestorMaterias gestorMaterias = new GestorMaterias();
+    GestorCalificaciones gestorCalificaciones = new GestorCalificaciones();
 
     public void menuAlumnos() {
-        GestorAlumnos gestorAlumnos = new GestorAlumnos();
+
         do {
 
             System.out.println("\n--- MENU ALUMNOS ---");
@@ -96,8 +104,6 @@ public class Menu {
 
     public void menuMaterias() {
 
-        GestorMaterias gestorMaterias = new GestorMaterias();
-
         do {
 
             System.out.println("\n--- MENU MATERIAS ---");
@@ -123,7 +129,7 @@ public class Menu {
                     System.out.print("Cupo maximo: ");
                     int cupo = leer.nextInt();
 
-                    Materia materia = new Materia(nombre,codigo,cupo);
+                    Materia materia = new Materia(nombre, codigo, cupo);
 
                     gestorMaterias.registrarMateria(materia);
                     break;
@@ -131,11 +137,11 @@ public class Menu {
                 case 2:
                     System.out.print("Codigo de la materia: ");
 
-                    String codigoModificar =
-                            leer.next();
+                    String codigoModificar
+                            = leer.next();
 
-                    Materia modificar =
-                            gestorMaterias.buscarPorCodigo(
+                    Materia modificar
+                            = gestorMaterias.buscarPorCodigo(
                                     codigoModificar
                             );
 
@@ -170,8 +176,8 @@ public class Menu {
                 case 3:
                     System.out.print("Codigo: ");
 
-                    String codigoEliminar =
-                            leer.next();
+                    String codigoEliminar
+                            = leer.next();
 
                     gestorMaterias.eliminarMateria(
                             codigoEliminar
@@ -179,8 +185,8 @@ public class Menu {
                     break;
 
                 case 4:
-                    List<Materia> materias =
-                            gestorMaterias.listarMaterias();
+                    List<Materia> materias
+                            = gestorMaterias.listarMaterias();
 
                     if (materias.isEmpty()) {
 
@@ -217,7 +223,100 @@ public class Menu {
     public void menuInscripciones() {
     }
 
-    public void menuCalificaciones() {
+    public void menuCalificaciones() throws AlumnoNoEncontradoException, MateriaNoEncontradaException {
+        System.out.println("\n--- MENU CALIFICACIONES ---");
+        System.out.println("1. cargar nota");
+        System.out.println("2. Modificar nota");
+        System.out.println("3. Eliminar nota");
+        System.out.println("4. ver notas de un alumno");
+        System.out.println("0. Volver");
+        option = leer.nextInt();
+
+        switch (option) {
+            case 1:
+                System.out.print("Ingrese el CI del alumno: ");
+                Alumno a = gestorAlumnos.buscarPorCI(leer.next());
+                if (a == null) {
+                    throw new AlumnoNoEncontradoException();
+                }
+                System.out.print("Ingrese el codigo de la materia: ");
+                Materia m = gestorMaterias.buscarPorCodigo(leer.next());
+                if (m == null) {
+                    throw new MateriaNoEncontradaException();
+                }
+                if (!a.estaInscripto(m)) {
+                    System.out.println(
+                            "El alumno no esta inscripto en esa materia."
+                    );
+                    break;
+                }
+
+                System.out.print("Ingrese la nota: ");
+                double nota = leer.nextDouble();
+                String fecha = LocalDate.now().toString();
+                Calificacion c = new Calificacion(nota, fecha, m);
+                gestorCalificaciones.cargarNota(c);
+                break;
+
+            case 2:
+                System.out.print("Ingrese el ID de la calificacion: ");
+                int id = leer.nextInt();
+                Calificacion c1 = gestorCalificaciones.buscarPorId(id);
+                if (c1 == null) {
+                    System.out.println("No existe esa calificacion.");
+                    break;
+                }
+                System.out.print("Ingrese la nueva nota: ");
+                double nuevaNota = leer.nextDouble();
+                gestorCalificaciones.modificarNota(c1);
+                break;
+
+            case 3:
+
+                System.out.print("Ingrese el ID de la nota a eliminar: ");
+                int i = leer.nextInt();
+                System.out.println("¿Esta seguro que desea eliminar la nota? s/n");
+                String respuesta = leer.next();
+                if (respuesta.equalsIgnoreCase("s")) {
+                    gestorCalificaciones.eliminarNota(i);
+                } else {
+                    System.out.println("No se elimino ninguna nota.");
+                }
+                break;
+
+            case 4:
+                System.out.print("Ingrese el CI del alumno: ");
+                String ci = leer.next();
+                Alumno alumno = gestorAlumnos.buscarPorCI(ci);
+                if (alumno == null) {
+                    System.out.println("Alumno no encontrado");
+                    break;
+                }
+                System.out.println("===== NOTAS DEL ALUMNO =====");
+                for (Materia materia : alumno.getMateriasInscriptas()) {
+                    System.out.println("\nMateria: " + materia.getNombre());
+                    boolean tieneNota = false;
+                    for (Calificacion calificacion : alumno.getCalificaciones()) {
+                        if (calificacion.getMateria().getCodigo().equals(materia.getCodigo())) {
+                            System.out.println("Nota: " + calificacion.getNota());
+                            tieneNota = true;
+                        }
+                    }
+                    if (!tieneNota) {
+                        System.out.println("Sin calificaciones registradas");
+                    }
+                }
+                break;
+            case 0:
+                System.out.println("Volviendo...");
+                break;
+
+            default:
+                System.out.println(
+                        "Opcion incorrecta"
+                );
+        }
+
     }
 
     public void menuConsultas() {

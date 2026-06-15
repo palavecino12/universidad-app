@@ -6,34 +6,25 @@ public class Calificacion {
     private double nota;
     private String fecha;
     private Materia materia;
-    //agregue alumno porque en el uml sale y en los constructores igual
-    private Alumno alumno;
 
     //Constructor para crear una nueva calificacion.
     //No recibe id porque la db lo genera automáticamente.
-    public Calificacion(double nota, String fecha, Materia materia, Alumno alumno) {
+    public Calificacion(double nota, String fecha, Materia materia) {
         this.nota = nota;
         this.fecha = fecha;
         this.materia = materia;
-        this.alumno = alumno;
     }
 
     //Constructor para el momento traer una calificacion de la db.
     //Este si recibe id porque lo trae de la db.
-    public Calificacion(int id, double nota, String fecha, Materia materia, Alumno alumno) {
+    public Calificacion(int id, double nota, String fecha, Materia materia) {
         this.id = id;
         this.nota = nota;
         this.fecha = fecha;
         this.materia = materia;
-        this.alumno = alumno;
     }
 
-    public Alumno getAlumno() {
-        return alumno;
-    }
-    public void setAlumno(Alumno alumno) {
-        this.alumno = alumno;
-    }
+    
 
     public boolean esAprobado() {
         return nota >= 6;

@@ -12,20 +12,38 @@ public class CalificacionesDAO {
     public void crearCalificacion(Calificacion calificacion) {
         String sql = """
                 INSERT INTO calificacion
-                (nota, fecha, ci_alumno, codigo_materia)
-                VALUES (?, ?, ?, ?)
+                (nota, fecha, codigo_materia)
+                VALUES (?, ?, ?)
                 """;
 
         try (Connection con = ConexionDB.getConexion(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setDouble(1, calificacion.getNota());
             ps.setString(2, calificacion.getFecha());
-            ps.setString(3, calificacion.getAlumno().getCi());
             ps.setString(4, calificacion.getMateria().getCodigo());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
+    }
+
+    public Calificacion buscarPorId(int id) {
+        String sql = "SELECT * FROM calificacion WHERE id=?";
+        try (Connection con = ConexionDB.getConexion(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return new Calificacion(
+                        rs.getInt("id"),
+                        rs.getDouble("nota"),
+                        rs.getString("fecha"),
+                        null
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public void modificarCalificacion(Calificacion calificacion) {
@@ -70,7 +88,7 @@ public class CalificacionesDAO {
 
             while (rs.next()) {
 
-                Calificacion calificacion = new Calificacion(rs.getInt("id"),rs.getDouble("nota"),rs.getString("fecha"),null,null);
+                Calificacion calificacion = new Calificacion(rs.getInt("id"), rs.getDouble("nota"), rs.getString("fecha"), null);
                 lista.add(calificacion);
             }
         } catch (SQLException e) {

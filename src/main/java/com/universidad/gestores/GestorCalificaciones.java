@@ -13,6 +13,10 @@ public class GestorCalificaciones {
         this.calificacionesDAO = new CalificacionesDAO();
     }
 
+    public Calificacion buscarPorId(int id) {
+        return calificacionesDAO.buscarPorId(id);
+    }
+
     public void cargarNota(Calificacion calificacion) {
         if (calificacion.getNota() < 0 || calificacion.getNota() > 10) {
             System.out.println("La nota debe estar entre 0 y 10");
@@ -23,6 +27,10 @@ public class GestorCalificaciones {
     }
 
     public void modificarNota(Calificacion calificacion) {
+        if (calificacion.getNota() < 0 || calificacion.getNota() > 10) {
+            System.out.println("La nota debe estar entre 0 y 10");
+            return;
+        }
         calificacionesDAO.modificarCalificacion(calificacion);
         System.out.println("Nota modificada correctamente");
     }

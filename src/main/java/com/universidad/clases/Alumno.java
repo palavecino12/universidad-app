@@ -14,12 +14,11 @@ public class Alumno extends Persona implements Inscribible {
     /**
      * Constructor para crear un alumno nuevo.
      *
-     * No recibimos las listas porque un alumno nuevo
-     * todavía no tiene materias ni calificaciones.
+     * No recibimos las listas porque un alumno nuevo todavía no tiene materias
+     * ni calificaciones.
      *
      * Las inicializamos vacías.
      */
-
     // Para crear un nuevo alumno
     public Alumno(String nombre, String apellido, String ci, String fechaNacimiento, String email) {
         super(nombre, apellido, ci);
@@ -40,11 +39,10 @@ public class Alumno extends Persona implements Inscribible {
         this.calificaciones = new ArrayList<>();
     }
 
- 
-
     public String getFechaNacimiento() {
         return fechaNacimiento;
     }
+
     public void setFechaNacimiento(String fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
@@ -52,6 +50,7 @@ public class Alumno extends Persona implements Inscribible {
     public String getEmail() {
         return email;
     }
+
     public void setEmail(String email) {
         this.email = email;
     }
@@ -59,6 +58,7 @@ public class Alumno extends Persona implements Inscribible {
     public ArrayList<Materia> getMateriasInscriptas() {
         return materiasInscriptas;
     }
+
     public void setMateriasInscriptas(ArrayList<Materia> materiasInscriptas) {
         this.materiasInscriptas = materiasInscriptas;
     }
@@ -66,6 +66,7 @@ public class Alumno extends Persona implements Inscribible {
     public ArrayList<Calificacion> getCalificaciones() {
         return calificaciones;
     }
+
     public void setCalificaciones(ArrayList<Calificacion> calificaciones) {
         this.calificaciones = calificaciones;
     }
@@ -73,6 +74,7 @@ public class Alumno extends Persona implements Inscribible {
     public int getId() {
         return id;
     }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -115,9 +117,9 @@ public class Alumno extends Persona implements Inscribible {
 
                 System.out.println(
                         "- Materia: "
-                                + calificacion.getMateria().getNombre()
-                                + " | Nota: "
-                                + calificacion.getNota()
+                        + calificacion.getMateria().getNombre()
+                        + " | Nota: "
+                        + calificacion.getNota()
                 );
 
             }
@@ -129,23 +131,17 @@ public class Alumno extends Persona implements Inscribible {
     // ===========================
     // MÉTODOS DE LA INTERFAZ
     // ===========================
-
     /**
      * Inscribe al alumno en una materia.
      *
-     * IMPORTANTE:
-     * Actualmente solo modifica la lista que está
-     * en memoria.
+     * IMPORTANTE: Actualmente solo modifica la lista que está en memoria.
      *
-     * Más adelante la inscripción real se hará
-     * mediante:
+     * Más adelante la inscripción real se hará mediante:
      *
-     * GestorInscripciones
-     * +
-     * InscripcionDAO
+     * GestorInscripciones + InscripcionDAO
      *
-     * porque además habrá que guardar la inscripción
-     * en la tabla "inscripciones" de MySQL.
+     * porque además habrá que guardar la inscripción en la tabla
+     * "inscripciones" de MySQL.
      */
     @Override
     public void inscribirse(Materia materia) {
@@ -161,17 +157,31 @@ public class Alumno extends Persona implements Inscribible {
     /**
      * Da de baja al alumno de una materia.
      *
-     * Igual que el método anterior:
-     * por ahora solo elimina de la lista local.
+     * Igual que el método anterior: por ahora solo elimina de la lista local.
      *
-     * Más adelante GestorInscripciones e
-     * InscripcionDAO se encargarán de eliminar
-     * también el registro de la base de datos.
+     * Más adelante GestorInscripciones e InscripcionDAO se encargarán de
+     * eliminar también el registro de la base de datos.
      */
     @Override
     public void darseDeBaja(Materia materia) {
 
         materiasInscriptas.remove(materia);
+
+    }
+
+    public boolean estaInscripto(Materia materia) {
+
+        for (Materia m : materiasInscriptas) {
+
+            if (m.getCodigo().equals(materia.getCodigo())) {
+
+                return true;
+
+            }
+
+        }
+
+        return false;
 
     }
 
