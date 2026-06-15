@@ -2,6 +2,7 @@ package com.universidad.gestores;
 
 import com.universidad.clases.Materia;
 import com.universidad.dao.MateriaDAO;
+import com.universidad.exceptions.MateriaNoEncontradaException;
 
 import java.util.List;
 
@@ -24,22 +25,20 @@ public class GestorMaterias {
         materiaDAO.crearMateria(materia);
     }
 
-    public void modificarMateria(Materia materia) {
+    public void modificarMateria(Materia materia) throws MateriaNoEncontradaException {
 
         Materia existente = materiaDAO.buscarPorCodigo(materia.getCodigo());
         if (existente == null) {
-            System.out.println("La materia no existe.");
-            return;
+            throw new MateriaNoEncontradaException();
         }
         materiaDAO.modificarMateria(materia);
     }
 
-    public void eliminarMateria(String codigo) {
+    public void eliminarMateria(String codigo) throws MateriaNoEncontradaException {
 
         Materia existente = materiaDAO.buscarPorCodigo(codigo);
         if (existente == null) {
-            System.out.println("La materia no existe.");
-            return;
+            throw new MateriaNoEncontradaException();
         }
         // TODO:
         // En la etapa de inscripciones verificar

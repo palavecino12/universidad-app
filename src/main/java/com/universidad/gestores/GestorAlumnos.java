@@ -2,6 +2,8 @@ package com.universidad.gestores;
 
 import com.universidad.clases.Alumno;
 import com.universidad.dao.AlumnoDAO;
+import com.universidad.exceptions.AlumnoDuplicadoException;
+import com.universidad.exceptions.AlumnoNoEncontradoException;
 
 import java.util.List;
 
@@ -13,42 +15,37 @@ public class GestorAlumnos {
         this.alumnoDAO = new AlumnoDAO();
     }
 
-    public void registrarAlumno(Alumno alumno) {
+    public void registrarAlumno(Alumno alumno) throws AlumnoDuplicadoException {
 
         Alumno existente = alumnoDAO.buscarPorCI(alumno.getCi());
 
         if (existente != null) {
-            System.out.println("Ya existe un alumno con ese CI.");
-            return;
+            throw new AlumnoDuplicadoException();
         }
 
         alumnoDAO.crearAlumno(alumno);
     }
 
-    public void modificarAlumno(Alumno alumno) {
+    public void modificarAlumno(Alumno alumno) throws AlumnoNoEncontradoException {
 
         Alumno existente = alumnoDAO.buscarPorCI(alumno.getCi());
 
         if (existente == null) {
-            System.out.println("El alumno no existe.");
-            return;
+            throw new AlumnoNoEncontradoException();
         }
 
         alumnoDAO.modificarAlumno(alumno);
     }
 
-    public void eliminarAlumno(String ci) {
+    public void eliminarAlumno(String ci) throws AlumnoNoEncontradoException {
 
         Alumno existente = alumnoDAO.buscarPorCI(ci);
 
         if (existente == null) {
-            System.out.println("El alumno no existe.");
-            return;
+            throw new AlumnoNoEncontradoException();
         }
 
-        if (existente.getMateriasInscriptas() != null
-                && !existente.getMateriasInscriptas().isEmpty()) {
-
+        if (existente.getMateriasInscriptas() != null && !existente.getMateriasInscriptas().isEmpty()) {
             System.out.println("El alumno está inscripto a materias.");
             return;
         }
