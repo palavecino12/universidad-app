@@ -1,6 +1,7 @@
 package com.universidad.dao;
 
 import com.universidad.clases.Calificacion;
+import com.universidad.clases.Materia;
 import com.universidad.database.ConexionDB;
 
 import java.sql.*;
@@ -28,7 +29,7 @@ public class CalificacionesDAO {
     }
 
     public Calificacion buscarPorId(int id) {
-        String sql = "SELECT * FROM calificacion WHERE id=?";
+        String sql = "SELECT * FROM calificaciones WHERE id=?";
         try (Connection con = ConexionDB.getConexion(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
@@ -48,7 +49,7 @@ public class CalificacionesDAO {
 
     public void modificarCalificacion(Calificacion calificacion) {
         String sql = """
-                UPDATE calificacion
+                UPDATE calificaciones
                 SET nota=?, fecha=?
                 WHERE id=?
                 """;
@@ -65,7 +66,7 @@ public class CalificacionesDAO {
 
     public void eliminarCalificacion(int id) {
 
-        String sql = "DELETE FROM calificacion WHERE id=?";
+        String sql = "DELETE FROM calificaciones WHERE id=?";
 
         try (Connection con = ConexionDB.getConexion(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
@@ -76,26 +77,52 @@ public class CalificacionesDAO {
     }
 
     public List<Calificacion> listarPorAlumno(String ci) {
+
         List<Calificacion> lista = new ArrayList<>();
+
         String sql = """
-                SELECT *
-                FROM calificacion
-                WHERE ci_alumno=?
+                SELECT c.*, m.id as id_materia, m.nombre, m.codigo, m.cupo_maximo
+                FROM calificaciones c
+                INNER JOIN inscripciones i
+                ON c.id_inscripcion = i.id
+                INNER JOIN alumnos a
+                ON i.id_alumno = a.id
+                INNER JOIN materias m
+                ON i.id_materia = m.id
+                WHERE a.ci = ?
                 """;
+
         try (Connection con = ConexionDB.getConexion(); PreparedStatement ps = con.prepareStatement(sql)) {
+
             ps.setString(1, ci);
+
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
 
-                Calificacion calificacion = new Calificacion(rs.getInt("id"), rs.getDouble("nota"), rs.getString("fecha"), null);
+                Materia materia = new Materia(
+                        rs.getInt("id_materia"),
+                        rs.getString("nombre"),
+                        rs.getString("codigo"),
+                        rs.getInt("cupo_maximo")
+                );
+
+                Calificacion calificacion
+                        = new Calificacion(
+                                rs.getInt("id"),
+                                rs.getDouble("nota"),
+                                rs.getString("fecha"),
+                                materia
+                        );
+
                 lista.add(calificacion);
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return lista;
-
     }
-
 }
+

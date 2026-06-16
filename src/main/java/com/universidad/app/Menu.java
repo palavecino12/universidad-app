@@ -482,18 +482,21 @@ public class Menu {
                     break;
                 }
                 System.out.println("===== NOTAS DEL ALUMNO =====");
-                for (Materia materia : alumno.getMateriasInscriptas()) {
-                    System.out.println("\nMateria: " + materia.getNombre());
-                    boolean tieneNota = false;
-                    for (Calificacion calificacion : alumno.getCalificaciones()) {
-                        if (calificacion.getMateria().getCodigo().equals(materia.getCodigo())) {
-                            System.out.println("Nota: " + calificacion.getNota());
-                            tieneNota = true;
-                        }
-                    }
-                    if (!tieneNota) {
-                        System.out.println("Sin calificaciones registradas");
-                    }
+
+                List<Calificacion> notas = gestorCalificaciones.listarPorAlumno(ci);
+
+                if (notas.isEmpty()) {
+                    System.out.println("Sin calificaciones registradas");
+                    break;
+                }
+
+                for (Calificacion calificacion : notas) {
+                    System.out.println(
+                            "Materia: "
+                            + calificacion.getMateria().getNombre()
+                            + " | Nota: "
+                            + calificacion.getNota()
+                    );
                 }
                 break;
 
@@ -502,9 +505,7 @@ public class Menu {
                 break;
 
             default:
-                System.out.println(
-                        "Opcion incorrecta"
-                );
+                System.out.println("Opcion incorrecta");
         }
 
     }
