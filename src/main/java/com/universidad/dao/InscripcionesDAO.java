@@ -217,4 +217,36 @@ public class InscripcionesDAO {
         return null;
     }
 
+    public boolean tieneInscripciones(int idAlumno) {
+
+        String sql =
+                "SELECT COUNT(*) " +
+                        "FROM inscripciones " +
+                        "WHERE id_alumno = ?";
+
+        try (
+                Connection conexion = ConexionDB.getConexion();
+                PreparedStatement stmt =
+                        conexion.prepareStatement(sql)
+        ) {
+
+            stmt.setInt(1, idAlumno);
+
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+
+                return rs.getInt(1) > 0;
+
+            }
+
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+
+        }
+
+        return false;
+    }
+
 }

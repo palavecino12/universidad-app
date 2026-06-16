@@ -11,13 +11,11 @@ public class AlumnoDAO {
 
     public Alumno buscarPorId(int id) {
 
-        String sql =
-                "SELECT * FROM alumnos WHERE id = ?";
+        String sql = "SELECT * FROM alumnos WHERE id = ?";
 
         try (
                 Connection conexion = ConexionDB.getConexion();
-                PreparedStatement stmt =
-                        conexion.prepareStatement(sql)
+                PreparedStatement stmt = conexion.prepareStatement(sql)
         ) {
 
             stmt.setInt(1, id);
@@ -26,35 +24,17 @@ public class AlumnoDAO {
 
             if (rs.next()) {
 
-                String nombre =
-                        rs.getString("nombre");
+                String nombre = rs.getString("nombre");
+                String apellido = rs.getString("apellido");
+                String ci = rs.getString("ci");
+                String fechaNacimiento = rs.getString("fecha_nacimiento");
+                String email = rs.getString("email");
 
-                String apellido =
-                        rs.getString("apellido");
-
-                String ci =
-                        rs.getString("ci");
-
-                String fechaNacimiento =
-                        rs.getString("fecha_nacimiento");
-
-                String email =
-                        rs.getString("email");
-
-                return new Alumno(
-                        id,
-                        nombre,
-                        apellido,
-                        ci,
-                        fechaNacimiento,
-                        email
-                );
+                return new Alumno(id, nombre, apellido, ci, fechaNacimiento, email);
             }
 
         } catch (SQLException e) {
-
             e.printStackTrace();
-
         }
 
         return null;

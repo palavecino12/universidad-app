@@ -42,7 +42,6 @@ public class Alumno extends Persona implements Inscribible {
     public String getFechaNacimiento() {
         return fechaNacimiento;
     }
-
     public void setFechaNacimiento(String fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
@@ -50,7 +49,6 @@ public class Alumno extends Persona implements Inscribible {
     public String getEmail() {
         return email;
     }
-
     public void setEmail(String email) {
         this.email = email;
     }
@@ -58,7 +56,6 @@ public class Alumno extends Persona implements Inscribible {
     public ArrayList<Materia> getMateriasInscriptas() {
         return materiasInscriptas;
     }
-
     public void setMateriasInscriptas(ArrayList<Materia> materiasInscriptas) {
         this.materiasInscriptas = materiasInscriptas;
     }
@@ -66,7 +63,6 @@ public class Alumno extends Persona implements Inscribible {
     public ArrayList<Calificacion> getCalificaciones() {
         return calificaciones;
     }
-
     public void setCalificaciones(ArrayList<Calificacion> calificaciones) {
         this.calificaciones = calificaciones;
     }
@@ -74,7 +70,6 @@ public class Alumno extends Persona implements Inscribible {
     public int getId() {
         return id;
     }
-
     public void setId(int id) {
         this.id = id;
     }
@@ -148,9 +143,7 @@ public class Alumno extends Persona implements Inscribible {
 
         // Evitamos duplicados en la lista.
         if (!materiasInscriptas.contains(materia)) {
-
             materiasInscriptas.add(materia);
-
         }
     }
 
@@ -164,21 +157,15 @@ public class Alumno extends Persona implements Inscribible {
      */
     @Override
     public void darseDeBaja(Materia materia) {
-
         materiasInscriptas.remove(materia);
-
     }
 
     public boolean estaInscripto(Materia materia) {
 
         for (Materia m : materiasInscriptas) {
-
             if (m.getCodigo().equals(materia.getCodigo())) {
-
                 return true;
-
             }
-
         }
 
         return false;
