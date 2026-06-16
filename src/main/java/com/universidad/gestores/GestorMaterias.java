@@ -56,7 +56,11 @@ public class GestorMaterias {
         return materiaDAO.listarMaterias();
     }
 
-    public Materia buscarPorCodigo(String codigo) {
+    public Materia buscarPorCodigo(String codigo) throws MateriaNoEncontradaException {
+        Materia existente = materiaDAO.buscarPorCodigo(codigo);
+        if (existente == null) {
+            throw new MateriaNoEncontradaException();
+        }
         return materiaDAO.buscarPorCodigo(codigo);
     }
 

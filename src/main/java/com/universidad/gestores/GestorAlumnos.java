@@ -59,8 +59,11 @@ public class GestorAlumnos {
         alumnoDAO.eliminarAlumno(ci);
     }
 
-    public Alumno buscarPorCI(String ci) {
-
+    public Alumno buscarPorCI(String ci) throws AlumnoNoEncontradoException {
+        Alumno existente = alumnoDAO.buscarPorCI(ci);
+        if (existente == null) {
+            throw new AlumnoNoEncontradoException();
+        }
         return alumnoDAO.buscarPorCI(ci);
 
     }

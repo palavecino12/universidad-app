@@ -62,7 +62,12 @@ public class Menu {
                 case 2:
                     System.out.print("CI del alumno: ");
                     String ciModificar = leer.next();
-                    Alumno modificar = gestorAlumnos.buscarPorCI(ciModificar);
+                    Alumno modificar = null;
+                    try {
+                        modificar = gestorAlumnos.buscarPorCI(ciModificar);
+                    } catch (AlumnoNoEncontradoException ex) {
+                        System.out.println(ex.getMessage());
+                    }
                     if (modificar != null) {
                         System.out.print("Nuevo Nombre: ");
                         modificar.setNombre(leer.next());
@@ -80,6 +85,7 @@ public class Menu {
                     }
 
                     break;
+
                 case 3:
                     System.out.print("CI: ");
                     String ciEliminar = leer.next();
@@ -155,10 +161,14 @@ public class Menu {
                     String codigoModificar
                             = leer.next();
 
-                    Materia modificar
-                            = gestorMaterias.buscarPorCodigo(
-                                    codigoModificar
-                            );
+                    Materia modificar = null;
+                    try {
+                        modificar = gestorMaterias.buscarPorCodigo(
+                                codigoModificar
+                        );
+                    } catch (MateriaNoEncontradaException ex) {
+                        System.out.println(ex.getMessage());
+                    }
 
                     if (modificar != null) {
 
@@ -257,8 +267,18 @@ public class Menu {
                     System.out.print("Código de la materia: ");
                     String codigo = leer.next();
 
-                    Alumno alumno = gestorAlumnos.buscarPorCI(ci);
-                    Materia materia = gestorMaterias.buscarPorCodigo(codigo);
+                    Alumno alumno = null;
+                    try {
+                        alumno = gestorAlumnos.buscarPorCI(ci);
+                    } catch (AlumnoNoEncontradoException ex) {
+                        System.out.println(ex.getMessage());
+                    }
+                    Materia materia = null;
+                    try {
+                        materia = gestorMaterias.buscarPorCodigo(codigo);
+                    } catch (MateriaNoEncontradaException ex) {
+                        System.out.println(ex.getMessage());
+                    }
 
                     if (alumno == null) {
 
@@ -287,11 +307,19 @@ public class Menu {
                     System.out.print("Código de materia: ");
                     String codigoBaja = leer.next();
 
-                    Alumno alumnoBaja =
-                            gestorAlumnos.buscarPorCI(ciBaja);
+                    Alumno alumnoBaja = null;
+                    try {
+                        alumnoBaja = gestorAlumnos.buscarPorCI(ciBaja);
+                    } catch (AlumnoNoEncontradoException ex) {
+                        System.out.println(ex.getMessage());
+                    }
 
-                    Materia materiaBaja =
-                            gestorMaterias.buscarPorCodigo(codigoBaja);
+                    Materia materiaBaja = null;
+                    try {
+                        materiaBaja = gestorMaterias.buscarPorCodigo(codigoBaja);
+                    } catch (MateriaNoEncontradaException ex) {
+                        System.out.println(ex.getMessage());
+                    }
 
                     if (alumnoBaja == null) {
 
@@ -338,13 +366,15 @@ public class Menu {
                             "Código de materia: "
                     );
 
-                    String codigoMateria =
-                            leer.next();
+                    String codigoMateria
+                            = leer.next();
 
-                    Materia materiaConsulta =
-                            gestorMaterias.buscarPorCodigo(
-                                    codigoMateria
-                            );
+                    Materia materiaConsulta = null;
+                    try {
+                        materiaConsulta = gestorMaterias.buscarPorCodigo(codigoMateria);
+                    } catch (MateriaNoEncontradaException ex) {
+                        System.out.println(ex.getMessage());
+                    }
 
                     if (materiaConsulta == null) {
 
@@ -372,7 +402,7 @@ public class Menu {
         } while (option != 0);
     }
 
-    public void menuCalificaciones()  {
+    public void menuCalificaciones() {
         System.out.println("\n--- MENU CALIFICACIONES ---");
         System.out.println("1. cargar nota");
         System.out.println("2. Modificar nota");
@@ -384,14 +414,20 @@ public class Menu {
         switch (option) {
             case 1:
                 System.out.print("Ingrese el CI del alumno: ");
-                Alumno a = gestorAlumnos.buscarPorCI(leer.next());
-                if (a == null) {
-                    throw new A lumnoNoEncontradoException();
+                Alumno a = null;
+                Materia m = null;
+                try {
+                    a = gestorAlumnos.buscarPorCI(leer.next());
+                } catch (AlumnoNoEncontradoException e) {
+                    System.out.println(e.getMessage());
+                    break;
                 }
                 System.out.print("Ingrese el codigo de la materia: ");
-                Materia m = gestorMaterias.buscarPorCodigo(leer.next());
-                if (m == null) {
-                    throw new MateriaNoEncontradaException();
+                try {
+                    m = gestorMaterias.buscarPorCodigo(leer.next());
+                } catch (MateriaNoEncontradaException e) {
+                    System.out.println(e.getMessage());
+                    break;
                 }
                 if (!a.estaInscripto(m)) {
                     System.out.println(
@@ -436,7 +472,12 @@ public class Menu {
             case 4:
                 System.out.print("Ingrese el CI del alumno: ");
                 String ci = leer.next();
-                Alumno alumno = gestorAlumnos.buscarPorCI(ci);
+                Alumno alumno = null;
+                try {
+                    alumno = gestorAlumnos.buscarPorCI(ci);
+                } catch (AlumnoNoEncontradoException e) {
+                    System.out.println(e.getMessage());
+                }
                 if (alumno == null) {
                     System.out.println("Alumno no encontrado");
                     break;
@@ -456,6 +497,7 @@ public class Menu {
                     }
                 }
                 break;
+
             case 0:
                 System.out.println("Volviendo...");
                 break;
@@ -480,7 +522,11 @@ public class Menu {
             case 1:
                 System.out.print("ingrese el CI del alumno: ");
                 String codigo = leer.next();
-                System.out.println(ga.buscarPorCI(codigo));
+                try {
+                    System.out.println(ga.buscarPorCI(codigo));
+                } catch (AlumnoNoEncontradoException ex) {
+                    System.out.println(ex.getMessage());
+                }
                 break;
 
             case 2:
