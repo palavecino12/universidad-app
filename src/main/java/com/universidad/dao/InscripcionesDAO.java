@@ -15,9 +15,7 @@ public class InscripcionesDAO {
         String sql = "INSERT INTO inscripciones (id_alumno, id_materia, fecha_inscripcion) VALUES (?, ?, ?)";
 
         try (
-                Connection conexion = ConexionDB.getConexion();
-                PreparedStatement stmt = conexion.prepareStatement(sql)
-        ) {
+                Connection conexion = ConexionDB.getConexion(); PreparedStatement stmt = conexion.prepareStatement(sql)) {
 
             stmt.setInt(1, inscripcion.getAlumno().getId());
             stmt.setInt(2, inscripcion.getMateria().getId());
@@ -34,22 +32,20 @@ public class InscripcionesDAO {
 
     public void eliminarInscripcion(int idAlumno, int idMateria) {
 
-        String sql =
-                "DELETE FROM inscripciones " +
-                        "WHERE id_alumno = ? " +
-                        "AND id_materia = ?";
+        String sql
+                = "DELETE FROM inscripciones "
+                + "WHERE id_alumno = ? "
+                + "AND id_materia = ?";
 
         try (
-                Connection conexion = ConexionDB.getConexion();
-                PreparedStatement stmt =
-                        conexion.prepareStatement(sql)
-        ) {
+                Connection conexion = ConexionDB.getConexion(); PreparedStatement stmt
+                = conexion.prepareStatement(sql)) {
 
             stmt.setInt(1, idAlumno);
             stmt.setInt(2, idMateria);
 
-            int filasAfectadas =
-                    stmt.executeUpdate();
+            int filasAfectadas
+                    = stmt.executeUpdate();
 
             if (filasAfectadas > 0) {
 
@@ -74,15 +70,13 @@ public class InscripcionesDAO {
 
     public Inscripcion buscarInscripcion(int idAlumno, int idMateria) {
 
-        String sql =
-                "SELECT * FROM inscripciones " +
-                        "WHERE id_alumno = ? " +
-                        "AND id_materia = ?";
+        String sql
+                = "SELECT * FROM inscripciones "
+                + "WHERE id_alumno = ? "
+                + "AND id_materia = ?";
 
         try (
-                Connection conexion = ConexionDB.getConexion();
-                PreparedStatement stmt = conexion.prepareStatement(sql)
-        ) {
+                Connection conexion = ConexionDB.getConexion(); PreparedStatement stmt = conexion.prepareStatement(sql)) {
 
             stmt.setInt(1, idAlumno);
             stmt.setInt(2, idMateria);
@@ -91,23 +85,23 @@ public class InscripcionesDAO {
 
             if (rs.next()) {
 
-                int id =
-                        rs.getInt("id");
+                int id
+                        = rs.getInt("id");
 
-                String fechaInscripcion =
-                        rs.getString("fecha_inscripcion");
+                String fechaInscripcion
+                        = rs.getString("fecha_inscripcion");
 
-                AlumnoDAO alumnoDAO =
-                        new AlumnoDAO();
+                AlumnoDAO alumnoDAO
+                        = new AlumnoDAO();
 
-                MateriaDAO materiaDAO =
-                        new MateriaDAO();
+                MateriaDAO materiaDAO
+                        = new MateriaDAO();
 
-                Alumno alumno =
-                        alumnoDAO.buscarPorId(idAlumno);
+                Alumno alumno
+                        = alumnoDAO.buscarPorId(idAlumno);
 
-                Materia materia =
-                        materiaDAO.buscarPorId(idMateria);
+                Materia materia
+                        = materiaDAO.buscarPorId(idMateria);
 
                 return new Inscripcion(
                         id,
@@ -128,48 +122,46 @@ public class InscripcionesDAO {
 
     public List<Inscripcion> listarPorMateria(int idMateria) {
 
-        List<Inscripcion> inscripciones =
-                new ArrayList<>();
+        List<Inscripcion> inscripciones
+                = new ArrayList<>();
 
-        String sql =
-                "SELECT * FROM inscripciones " +
-                        "WHERE id_materia = ?";
+        String sql
+                = "SELECT * FROM inscripciones "
+                + "WHERE id_materia = ?";
 
         try (
-                Connection conexion = ConexionDB.getConexion();
-                PreparedStatement stmt =
-                        conexion.prepareStatement(sql)
-        ) {
+                Connection conexion = ConexionDB.getConexion(); PreparedStatement stmt
+                = conexion.prepareStatement(sql)) {
 
             stmt.setInt(1, idMateria);
 
             ResultSet rs = stmt.executeQuery();
 
-            AlumnoDAO alumnoDAO =
-                    new AlumnoDAO();
+            AlumnoDAO alumnoDAO
+                    = new AlumnoDAO();
 
-            MateriaDAO materiaDAO =
-                    new MateriaDAO();
+            MateriaDAO materiaDAO
+                    = new MateriaDAO();
 
             while (rs.next()) {
 
-                int id =
-                        rs.getInt("id");
+                int id
+                        = rs.getInt("id");
 
-                int idAlumno =
-                        rs.getInt("id_alumno");
+                int idAlumno
+                        = rs.getInt("id_alumno");
 
-                String fechaInscripcion =
-                        rs.getString("fecha_inscripcion");
+                String fechaInscripcion
+                        = rs.getString("fecha_inscripcion");
 
-                Alumno alumno =
-                        alumnoDAO.buscarPorId(idAlumno);
+                Alumno alumno
+                        = alumnoDAO.buscarPorId(idAlumno);
 
-                Materia materia =
-                        materiaDAO.buscarPorId(idMateria);
+                Materia materia
+                        = materiaDAO.buscarPorId(idMateria);
 
-                Inscripcion inscripcion =
-                        new Inscripcion(
+                Inscripcion inscripcion
+                        = new Inscripcion(
                                 id,
                                 alumno,
                                 materia,
@@ -192,8 +184,7 @@ public class InscripcionesDAO {
 
         String sql = "SELECT * FROM inscripciones WHERE id=?";
 
-        try (Connection con = ConexionDB.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = ConexionDB.getConexion(); PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, idInscripcion);
 
@@ -215,6 +206,29 @@ public class InscripcionesDAO {
         }
 
         return null;
+    }
+
+    public boolean existeInscripcion(int idAlumno, int idMateria) {
+
+        String sql = "SELECT * FROM inscripciones WHERE id_alumno = ? AND id_materia = ?";
+
+        try (
+                Connection conexion = ConexionDB.getConexion(); PreparedStatement stmt = conexion.prepareStatement(sql)) {
+
+            stmt.setInt(1, idAlumno);
+            stmt.setInt(2, idMateria);
+
+            ResultSet rs = stmt.executeQuery();
+
+            return rs.next(); // si encuentra una fila devuelve true
+
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+
+        }
+
+        return false;
     }
 
 }

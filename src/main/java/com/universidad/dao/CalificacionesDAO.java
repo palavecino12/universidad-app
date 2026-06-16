@@ -11,15 +11,15 @@ public class CalificacionesDAO {
 
     public void crearCalificacion(Calificacion calificacion) {
         String sql = """
-                INSERT INTO calificacion
-                (nota, fecha, codigo_materia)
+                INSERT INTO calificaciones
+                (id_inscripcion, nota, fecha)
                 VALUES (?, ?, ?)
                 """;
 
         try (Connection con = ConexionDB.getConexion(); PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setDouble(1, calificacion.getNota());
-            ps.setString(2, calificacion.getFecha());
-            ps.setString(4, calificacion.getMateria().getCodigo());
+            ps.setDouble(2, calificacion.getNota());
+            ps.setString(3, calificacion.getFecha());
+            ps.setString(1, calificacion.getMateria().getCodigo());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

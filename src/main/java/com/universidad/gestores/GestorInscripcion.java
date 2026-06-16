@@ -54,12 +54,7 @@ public class GestorInscripcion {
             return;
         }
 
-        Inscripcion inscripcion =
-                new Inscripcion(
-                        alumno,
-                        materia,
-                        LocalDate.now().toString()
-                );
+        Inscripcion inscripcion = new Inscripcion(alumno,materia,LocalDate.now().toString());
 
         inscripcionDAO.crearInscripcion(inscripcion);
 
@@ -131,4 +126,13 @@ public class GestorInscripcion {
             );
         }
     }
+
+    public boolean estaInscripto(Alumno a, Materia m) {
+
+    return inscripcionDAO.existeInscripcion(
+            a.getId(),
+            m.getId()
+    );
+
+}
 }
