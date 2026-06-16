@@ -11,21 +11,52 @@ import java.util.List;
 public class CalificacionesDAO {
 
     public void crearCalificacion(Calificacion calificacion) {
-        String sql = """
-                INSERT INTO calificaciones
-                (id_inscripcion, nota, fecha)
-                VALUES (?, ?, ?)
-                """;
 
-        try (Connection con = ConexionDB.getConexion(); PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setDouble(2, calificacion.getNota());
-            ps.setString(3, calificacion.getFecha());
-            ps.setString(1, calificacion.getMateria().getCodigo());
-            ps.executeUpdate();
+        String buscarInscripcion = """
+            SELECT i.id
+            FROM inscripciones i
+            INNER JOIN materias m
+            ON i.id_materia = m.id
+            WHERE m.id = ?
+            """;
+
+        String insertar = """
+            INSERT INTO calificaciones
+            (id_inscripcion, nota, fecha)
+            VALUES (?, ?, ?)
+            """;
+
+        try (Connection con = ConexionDB.getConexion()) {
+
+            PreparedStatement ps1 = con.prepareStatement(buscarInscripcion);
+
+            ps1.setInt(1, calificacion.getMateria().getId());
+
+            ResultSet rs = ps1.executeQuery();
+
+            if (rs.next()) {
+
+                int idInscripcion = rs.getInt("id");
+
+                PreparedStatement ps2 = con.prepareStatement(insertar);
+
+                ps2.setInt(1, idInscripcion);
+                ps2.setDouble(2, calificacion.getNota());
+                ps2.setString(3, calificacion.getFecha());
+
+                ps2.executeUpdate();
+
+            } else {
+
+                System.out.println("No existe inscripción para esa materia.");
+
+            }
+
         } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
+            e.printStackTrace();
+
+        }
     }
 
     public Calificacion buscarPorId(int id) {
@@ -125,4 +156,3 @@ public class CalificacionesDAO {
         return lista;
     }
 }
-
