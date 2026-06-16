@@ -2,6 +2,7 @@ package com.universidad.gestores;
 
 import com.universidad.clases.Alumno;
 import com.universidad.dao.AlumnoDAO;
+import com.universidad.dao.InscripcionesDAO;
 import com.universidad.exceptions.AlumnoDuplicadoException;
 import com.universidad.exceptions.AlumnoNoEncontradoException;
 
@@ -10,9 +11,12 @@ import java.util.List;
 public class GestorAlumnos {
 
     private AlumnoDAO alumnoDAO;
+    private InscripcionesDAO inscripcionesDAO;
 
     public GestorAlumnos() {
+
         this.alumnoDAO = new AlumnoDAO();
+        this.inscripcionesDAO = new InscripcionesDAO();
     }
 
     public Alumno buscarPorId(int id) {
@@ -51,11 +55,6 @@ public class GestorAlumnos {
             throw new AlumnoNoEncontradoException();
         }
 
-        if (existente.getMateriasInscriptas() != null && !existente.getMateriasInscriptas().isEmpty()) {
-            System.out.println("El alumno está inscripto a materias.");
-            return;
-        }
-
         alumnoDAO.eliminarAlumno(ci);
     }
 
@@ -84,5 +83,15 @@ public class GestorAlumnos {
 
         return alumnoDAO.listarPorEstadoAcademico(estado);
 
+    }
+
+    public boolean tieneInscripciones(String ci) {
+
+        Alumno alumno = alumnoDAO.buscarPorCI(ci);
+        if (alumno == null) {
+            return false;
+        }
+
+        return inscripcionesDAO.tieneInscripciones(alumno.getId());
     }
 }

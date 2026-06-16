@@ -89,10 +89,36 @@ public class Menu {
                 case 3:
                     System.out.print("CI: ");
                     String ciEliminar = leer.next();
+                    if (gestorAlumnos.tieneInscripciones(ciEliminar)) {
+
+                        System.out.println(
+                                "El alumno posee inscripciones."
+                        );
+
+                        System.out.print(
+                                "¿Desea eliminarlo igualmente? (S/N): "
+                        );
+
+                        String respuesta = leer.next();
+
+                        if (!respuesta.equalsIgnoreCase("S")) {
+
+                            System.out.println(
+                                    "Operación cancelada."
+                            );
+
+                            break;
+                        }
+                    }
+
                     try {
-                        gestorAlumnos.eliminarAlumno(ciEliminar);
+                        gestorAlumnos.eliminarAlumno(
+                                ciEliminar
+                        );
+
                     } catch (AlumnoNoEncontradoException e) {
                         System.out.println(e.getMessage());
+
                     }
                     break;
 
