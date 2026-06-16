@@ -429,7 +429,6 @@ public class Menu {
                     System.out.println(e.getMessage());
                     break;
                 }
-                System.out.println(a.getMateriasInscriptas());
                 if (!gestorInscripcion.estaInscripto(a, m)) {
                     System.out.println("El alumno no esta inscripto en esa materia.");
                     break;
