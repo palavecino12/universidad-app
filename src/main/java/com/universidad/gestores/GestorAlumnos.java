@@ -15,6 +15,12 @@ public class GestorAlumnos {
         this.alumnoDAO = new AlumnoDAO();
     }
 
+    public Alumno buscarPorId(int id) {
+
+        return alumnoDAO.buscarPorId(id);
+
+    }
+
     public void registrarAlumno(Alumno alumno) throws AlumnoDuplicadoException {
 
         Alumno existente = alumnoDAO.buscarPorCI(alumno.getCi());

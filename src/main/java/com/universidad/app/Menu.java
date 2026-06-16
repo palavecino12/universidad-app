@@ -3,10 +3,12 @@ package com.universidad.app;
 import com.universidad.clases.Alumno;
 import com.universidad.clases.Calificacion;
 import com.universidad.clases.Materia;
+import com.universidad.exceptions.AlumnoDuplicadoException;
 import com.universidad.exceptions.AlumnoNoEncontradoException;
 import com.universidad.exceptions.MateriaNoEncontradaException;
 import com.universidad.gestores.GestorAlumnos;
 import com.universidad.gestores.GestorCalificaciones;
+import com.universidad.gestores.GestorInscripcion;
 import com.universidad.gestores.GestorMaterias;
 import java.time.LocalDate;
 
@@ -19,6 +21,7 @@ public class Menu {
     int option;
     GestorAlumnos gestorAlumnos = new GestorAlumnos();
     GestorMaterias gestorMaterias = new GestorMaterias();
+    GestorInscripcion gestorInscripcion = new GestorInscripcion();
     GestorCalificaciones gestorCalificaciones = new GestorCalificaciones();
 
     public void menuAlumnos() {
@@ -49,7 +52,11 @@ public class Menu {
                     System.out.print("Email: ");
                     String email = leer.nextLine();
                     Alumno alumno = new Alumno(nombre, apellido, ci, fechaNacimiento, email);
-                    gestorAlumnos.registrarAlumno(alumno);
+                    try {
+                        gestorAlumnos.registrarAlumno(alumno);
+                    } catch (AlumnoDuplicadoException e) {
+                        System.out.println(e.getMessage());
+                    }
                     break;
 
                 case 2:
@@ -63,7 +70,11 @@ public class Menu {
                         modificar.setApellido(leer.next());
                         System.out.print("Nuevo Email: ");
                         modificar.setEmail(leer.next());
-                        gestorAlumnos.modificarAlumno(modificar);
+                        try {
+                            gestorAlumnos.modificarAlumno(modificar);
+                        } catch (AlumnoNoEncontradoException e) {
+                            System.out.println(e.getMessage());
+                        }
                     } else {
                         System.out.println("Alumno no encontrado");
                     }
@@ -72,7 +83,11 @@ public class Menu {
                 case 3:
                     System.out.print("CI: ");
                     String ciEliminar = leer.next();
-                    gestorAlumnos.eliminarAlumno(ciEliminar);
+                    try {
+                        gestorAlumnos.eliminarAlumno(ciEliminar);
+                    } catch (AlumnoNoEncontradoException e) {
+                        System.out.println(e.getMessage());
+                    }
                     break;
 
                 case 4:
@@ -155,13 +170,13 @@ public class Menu {
                         );
 
                         System.out.print("Nuevo cupo maximo: ");
-                        modificar.setCupoMaximo(
-                                leer.nextInt()
-                        );
+                        modificar.setCupoMaximo(leer.nextInt());
 
-                        gestorMaterias.modificarMateria(
-                                modificar
-                        );
+                        try {
+                            gestorMaterias.modificarMateria(modificar);
+                        } catch (MateriaNoEncontradaException e) {
+                            System.out.println(e.getMessage());
+                        }
 
                     } else {
 
@@ -179,9 +194,11 @@ public class Menu {
                     String codigoEliminar
                             = leer.next();
 
-                    gestorMaterias.eliminarMateria(
-                            codigoEliminar
-                    );
+                    try {
+                        gestorMaterias.eliminarMateria(codigoEliminar);
+                    } catch (MateriaNoEncontradaException e) {
+                        System.out.println(e.getMessage());
+                    }
                     break;
 
                 case 4:
@@ -221,9 +238,141 @@ public class Menu {
     }
 
     public void menuInscripciones() {
+        do {
+
+            System.out.println("\n--- MENU INSCRIPCIONES ---");
+            System.out.println("1. Inscribir alumno");
+            System.out.println("2. Dar de baja alumno");
+            System.out.println("3. Listar alumnos inscriptos");
+            System.out.println("0. Volver");
+
+            option = leer.nextInt();
+
+            switch (option) {
+
+                case 1:
+                    System.out.print("CI del alumno: ");
+                    String ci = leer.next();
+
+                    System.out.print("Código de la materia: ");
+                    String codigo = leer.next();
+
+                    Alumno alumno = gestorAlumnos.buscarPorCI(ci);
+                    Materia materia = gestorMaterias.buscarPorCodigo(codigo);
+
+                    if (alumno == null) {
+
+                        System.out.println(
+                                "Alumno no encontrado."
+                        );
+
+                        break;
+                    }
+
+                    if (materia == null) {
+
+                        System.out.println(
+                                "Materia no encontrada."
+                        );
+
+                        break;
+                    }
+                    gestorInscripcion.inscribirAlumno(alumno, materia);
+                    break;
+
+                case 2:
+                    System.out.print("CI del alumno: ");
+                    String ciBaja = leer.next();
+
+                    System.out.print("Código de materia: ");
+                    String codigoBaja = leer.next();
+
+                    Alumno alumnoBaja =
+                            gestorAlumnos.buscarPorCI(ciBaja);
+
+                    Materia materiaBaja =
+                            gestorMaterias.buscarPorCodigo(codigoBaja);
+
+                    if (alumnoBaja == null) {
+
+                        System.out.println(
+                                "Alumno no encontrado."
+                        );
+
+                        break;
+                    }
+
+                    if (materiaBaja == null) {
+
+                        System.out.println(
+                                "Materia no encontrada."
+                        );
+
+                        break;
+                    }
+
+                    System.out.print(
+                            "¿Confirma la baja? (S/N): "
+                    );
+
+                    String respuesta = leer.next();
+
+                    if (respuesta.equalsIgnoreCase("S")) {
+
+                        gestorInscripcion.darDeBajaAlumno(
+                                alumnoBaja,
+                                materiaBaja
+                        );
+
+                    } else {
+
+                        System.out.println(
+                                "Operación cancelada."
+                        );
+
+                    }
+                    break;
+
+                case 3:
+                    System.out.print(
+                            "Código de materia: "
+                    );
+
+                    String codigoMateria =
+                            leer.next();
+
+                    Materia materiaConsulta =
+                            gestorMaterias.buscarPorCodigo(
+                                    codigoMateria
+                            );
+
+                    if (materiaConsulta == null) {
+
+                        System.out.println(
+                                "Materia no encontrada."
+                        );
+
+                        break;
+                    }
+
+                    gestorInscripcion
+                            .listarAlumnosInscriptos(
+                                    materiaConsulta
+                            );
+                    break;
+
+                case 0:
+                    System.out.println("Volviendo...");
+                    break;
+
+                default:
+                    System.out.println("Opción incorrecta");
+            }
+
+        } while (option != 0);
     }
 
-    public void menuCalificaciones() throws AlumnoNoEncontradoException, MateriaNoEncontradaException {
+    public void menuCalificaciones()  {
         System.out.println("\n--- MENU CALIFICACIONES ---");
         System.out.println("1. cargar nota");
         System.out.println("2. Modificar nota");
@@ -237,7 +386,7 @@ public class Menu {
                 System.out.print("Ingrese el CI del alumno: ");
                 Alumno a = gestorAlumnos.buscarPorCI(leer.next());
                 if (a == null) {
-                    throw new AlumnoNoEncontradoException();
+                    throw new A lumnoNoEncontradoException();
                 }
                 System.out.print("Ingrese el codigo de la materia: ");
                 Materia m = gestorMaterias.buscarPorCodigo(leer.next());

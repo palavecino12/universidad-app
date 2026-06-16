@@ -10,6 +10,48 @@ import java.util.List;
 
 public class MateriaDAO {
 
+    public Materia buscarPorId(int id) {
+
+        String sql = "SELECT * FROM materias WHERE id = ?";
+
+        try (
+                Connection conexion = ConexionDB.getConexion();
+                PreparedStatement stmt =
+                        conexion.prepareStatement(sql)
+        ) {
+
+            stmt.setInt(1, id);
+
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+
+                String nombre =
+                        rs.getString("nombre");
+
+                String codigo =
+                        rs.getString("codigo");
+
+                int cupoMaximo =
+                        rs.getInt("cupo_maximo");
+
+                return new Materia(
+                        id,
+                        nombre,
+                        codigo,
+                        cupoMaximo
+                );
+            }
+
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+
+        }
+
+        return null;
+    }
+
     public void crearMateria(Materia materia) {
         String sql = "INSERT INTO materias(nombre, codigo, cupo_maximo) VALUES (?, ?, ?)";
 

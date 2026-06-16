@@ -37,7 +37,6 @@ public class Calificacion {
     public double getNota() {
         return this.nota;
     }
-
     public void setNota(double nota) {
         this.nota = nota;
     }
@@ -45,7 +44,6 @@ public class Calificacion {
     public String getFecha() {
         return this.fecha;
     }
-
     public void setFecha(String fecha) {
         this.fecha = fecha;
     }
@@ -53,7 +51,6 @@ public class Calificacion {
     public Materia getMateria() {
         return this.materia;
     }
-
     public void setMateria(Materia materia) {
         this.materia = materia;
     }

@@ -33,89 +33,160 @@ public class InscripcionesDAO {
     }
 
     public void eliminarInscripcion(int idAlumno, int idMateria) {
-        String sql = "DELETE FROM inscripciones WHERE id_alumno=? AND id_materia=?";
 
-        try (Connection con = ConexionDB.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        String sql =
+                "DELETE FROM inscripciones " +
+                        "WHERE id_alumno = ? " +
+                        "AND id_materia = ?";
 
-            ps.setInt(1, idAlumno);
-            ps.setInt(2, idMateria);
+        try (
+                Connection conexion = ConexionDB.getConexion();
+                PreparedStatement stmt =
+                        conexion.prepareStatement(sql)
+        ) {
 
-            ps.executeUpdate();
+            stmt.setInt(1, idAlumno);
+            stmt.setInt(2, idMateria);
 
-            System.out.println("Inscripción eliminada con éxito");
+            int filasAfectadas =
+                    stmt.executeUpdate();
+
+            if (filasAfectadas > 0) {
+
+                System.out.println(
+                        "Inscripción eliminada correctamente."
+                );
+
+            } else {
+
+                System.out.println(
+                        "No se encontró la inscripción."
+                );
+
+            }
 
         } catch (SQLException e) {
+
             e.printStackTrace();
+
         }
     }
 
     public Inscripcion buscarInscripcion(int idAlumno, int idMateria) {
 
-        String sql = "SELECT * FROM inscripciones WHERE id_alumno=? AND id_materia=?";
+        String sql =
+                "SELECT * FROM inscripciones " +
+                        "WHERE id_alumno = ? " +
+                        "AND id_materia = ?";
 
-        try (Connection con = ConexionDB.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        try (
+                Connection conexion = ConexionDB.getConexion();
+                PreparedStatement stmt = conexion.prepareStatement(sql)
+        ) {
 
-            ps.setInt(1, idAlumno);
-            ps.setInt(2, idMateria);
+            stmt.setInt(1, idAlumno);
+            stmt.setInt(2, idMateria);
 
-            ResultSet rs = ps.executeQuery();
+            ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
 
-                Alumno alumno = new Alumno(idAlumno, null, null, null, null, null);
-                Materia materia = new Materia(idMateria, null, null, 0);
+                int id =
+                        rs.getInt("id");
 
-                Inscripcion inscripcion = new Inscripcion(
-                        rs.getInt("id"),
+                String fechaInscripcion =
+                        rs.getString("fecha_inscripcion");
+
+                AlumnoDAO alumnoDAO =
+                        new AlumnoDAO();
+
+                MateriaDAO materiaDAO =
+                        new MateriaDAO();
+
+                Alumno alumno =
+                        alumnoDAO.buscarPorId(idAlumno);
+
+                Materia materia =
+                        materiaDAO.buscarPorId(idMateria);
+
+                return new Inscripcion(
+                        id,
                         alumno,
                         materia,
-                        rs.getDate("fecha_inscripcion").toString()
+                        fechaInscripcion
                 );
-
-                return inscripcion;
             }
 
         } catch (SQLException e) {
+
             e.printStackTrace();
+
         }
 
         return null;
     }
 
     public List<Inscripcion> listarPorMateria(int idMateria) {
-        List<Inscripcion> lista = new ArrayList<>();
 
-        String sql = "SELECT * FROM inscripciones WHERE id_materia=?";
+        List<Inscripcion> inscripciones =
+                new ArrayList<>();
 
-        try (Connection con = ConexionDB.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)
+        String sql =
+                "SELECT * FROM inscripciones " +
+                        "WHERE id_materia = ?";
+
+        try (
+                Connection conexion = ConexionDB.getConexion();
+                PreparedStatement stmt =
+                        conexion.prepareStatement(sql)
         ) {
 
-            ps.setInt(1, idMateria);
+            stmt.setInt(1, idMateria);
 
-            ResultSet rs = ps.executeQuery();
+            ResultSet rs = stmt.executeQuery();
+
+            AlumnoDAO alumnoDAO =
+                    new AlumnoDAO();
+
+            MateriaDAO materiaDAO =
+                    new MateriaDAO();
 
             while (rs.next()) {
 
-                int idInscripcion = rs.getInt("id");
-                int idAlumno = rs.getInt("id_alumno");
-                Date fecha = rs.getDate("fecha_inscripcion");
+                int id =
+                        rs.getInt("id");
 
-                Alumno alumno = new Alumno(idAlumno, null, null, null, null, null);
-                Materia materia = new Materia(idMateria, null, null, 0);
+                int idAlumno =
+                        rs.getInt("id_alumno");
 
-                Inscripcion inscripcion = new Inscripcion(idInscripcion,alumno, materia, fecha.toString());
+                String fechaInscripcion =
+                        rs.getString("fecha_inscripcion");
 
-                lista.add(inscripcion);
+                Alumno alumno =
+                        alumnoDAO.buscarPorId(idAlumno);
+
+                Materia materia =
+                        materiaDAO.buscarPorId(idMateria);
+
+                Inscripcion inscripcion =
+                        new Inscripcion(
+                                id,
+                                alumno,
+                                materia,
+                                fechaInscripcion
+                        );
+
+                inscripciones.add(inscripcion);
             }
 
         } catch (SQLException e) {
+
             e.printStackTrace();
+
         }
 
-        return lista;}
+        return inscripciones;
+    }
 
     public Inscripcion buscarPorId(int idInscripcion) {
 
