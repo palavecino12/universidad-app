@@ -48,20 +48,20 @@ public class CalificacionesDAO {
     }
 
     public void modificarCalificacion(Calificacion calificacion) {
-        String sql = """
-                UPDATE calificaciones
-                SET nota=?, fecha=?
-                WHERE id=?
-                """;
+        String sql = "UPDATE calificaciones SET nota=?, fecha=? WHERE id=?";
+
         try (Connection con = ConexionDB.getConexion(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setDouble(1, calificacion.getNota());
-            ps.setString(2, calificacion.getFecha());
+            ps.setDate(2, java.sql.Date.valueOf(calificacion.getFecha()));
             ps.setInt(3, calificacion.getId());
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
+            int filasAfectadas = ps.executeUpdate();
+            if (filasAfectadas == 0) {
+                System.out.println("No se encontró ningún registro con ID: " + calificacion.getId());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Aquí verás si hay un error de sintaxis o de formato
+        }
     }
 
     public void eliminarCalificacion(int id) {
@@ -125,4 +125,3 @@ public class CalificacionesDAO {
         return lista;
     }
 }
-

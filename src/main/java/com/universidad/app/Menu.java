@@ -476,7 +476,7 @@ public class Menu {
                     break;
                 }
                 System.out.print("Ingrese la nueva nota: ");
-                double nuevaNota = leer.nextDouble();
+                c1.setNota(leer.nextDouble());
                 gestorCalificaciones.modificarNota(c1);
                 break;
 
