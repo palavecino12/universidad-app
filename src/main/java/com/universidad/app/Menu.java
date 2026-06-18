@@ -2,6 +2,7 @@ package com.universidad.app;
 
 import com.universidad.clases.Alumno;
 import com.universidad.clases.Calificacion;
+import com.universidad.clases.Inscripcion;
 import com.universidad.clases.Materia;
 import com.universidad.exceptions.AlumnoDuplicadoException;
 import com.universidad.exceptions.AlumnoNoEncontradoException;
@@ -238,27 +239,25 @@ public class Menu {
                     break;
 
                 case 4:
-                    List<Materia> materias
-                            = gestorMaterias.listarMaterias();
+                    List<Materia> materias = gestorMaterias.listarMaterias();
 
                     if (materias.isEmpty()) {
-
-                        System.out.println(
-                                "No hay materias registradas."
-                        );
-
+                        System.out.println("No hay materias registradas.");
                     } else {
-
-                        System.out.println(
-                                "--- LISTA DE MATERIAS ---"
-                        );
+                        System.out.println("\n--- LISTA DE MATERIAS Y CANTIDAD DE INSCRIPTOS ---");
 
                         for (Materia m : materias) {
+                            int total = 0;
+                            try {
+                                total = gestorInscripcion.cantidadInscriptosEnMateria(m.getCodigo());
+                            } catch (MateriaNoEncontradaException ex) {
+                                System.out.println(ex.getMessage());
+                            }
 
-                            System.out.println(m);
-
+                            // Imprimimos la fila formateada
+                            System.out.println("Materia: " + m.getNombre()
+                                    + " | Alumnos inscriptos: " + total);
                         }
-
                     }
                     break;
 
@@ -464,7 +463,7 @@ public class Menu {
                 double nota = leer.nextDouble();
                 String fecha = LocalDate.now().toString();
                 Calificacion c = new Calificacion(nota, fecha, m);
-                gestorCalificaciones.cargarNota(c);
+                gestorCalificaciones.cargarNota(c, a, m);
                 break;
 
             case 2:

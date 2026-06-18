@@ -4,6 +4,8 @@ import com.universidad.clases.Alumno;
 import com.universidad.clases.Inscripcion;
 import com.universidad.clases.Materia;
 import com.universidad.dao.InscripcionesDAO;
+import com.universidad.dao.MateriaDAO;
+import com.universidad.exceptions.MateriaNoEncontradaException;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -15,19 +17,27 @@ public class GestorInscripcion {
     public GestorInscripcion() {
         this.inscripcionDAO = new InscripcionesDAO();
     }
+    
+    public Inscripcion buscarInscripcion(Alumno a, Materia m) {
+      Inscripcion i = inscripcionDAO.buscarInscripcion(a.getCi(), m.getCodigo());
+        if (i == null) {
+            System.out.println("La inscripcion no existe");
+        }
+        return i;
+    } 
 
     public boolean validarDuplicado(Alumno alumno, Materia materia) {
 
-        Inscripcion inscripcion = inscripcionDAO.buscarInscripcion(alumno.getId(), materia.getId());
+        Inscripcion inscripcion = inscripcionDAO.buscarInscripcion(alumno.getCi(), materia.getCodigo());
 
         return inscripcion != null;
     }
 
     public boolean validarCupo(Materia materia) {
 
-        List<Inscripcion> inscripciones =
-                inscripcionDAO.listarPorMateria(
-                        materia.getId()
+        List<Inscripcion> inscripciones
+                = inscripcionDAO.listarPorMateria(
+                        materia.getCodigo()
                 );
 
         return inscripciones.size()
@@ -54,7 +64,7 @@ public class GestorInscripcion {
             return;
         }
 
-        Inscripcion inscripcion = new Inscripcion(alumno,materia,LocalDate.now().toString());
+        Inscripcion inscripcion = new Inscripcion(alumno, materia, LocalDate.now().toString());
 
         inscripcionDAO.crearInscripcion(inscripcion);
 
@@ -65,10 +75,10 @@ public class GestorInscripcion {
 
     public void darDeBajaAlumno(Alumno alumno, Materia materia) {
 
-        Inscripcion inscripcion =
-                inscripcionDAO.buscarInscripcion(
-                        alumno.getId(),
-                        materia.getId()
+        Inscripcion inscripcion
+                = inscripcionDAO.buscarInscripcion(
+                        alumno.getCi(),
+                        materia.getCodigo()
                 );
 
         if (inscripcion == null) {
@@ -92,9 +102,9 @@ public class GestorInscripcion {
 
     public void listarAlumnosInscriptos(Materia materia) {
 
-        List<Inscripcion> inscripciones =
-                inscripcionDAO.listarPorMateria(
-                        materia.getId()
+        List<Inscripcion> inscripciones
+                = inscripcionDAO.listarPorMateria(
+                        materia.getCodigo()
                 );
 
         if (inscripciones.isEmpty()) {
@@ -108,31 +118,43 @@ public class GestorInscripcion {
 
         System.out.println(
                 "\n--- ALUMNOS INSCRIPTOS EN "
-                        + materia.getNombre()
-                        + " ---"
+                + materia.getNombre()
+                + " ---"
         );
 
         for (Inscripcion inscripcion : inscripciones) {
 
-            Alumno alumno =
-                    inscripcion.getAlumno();
+            Alumno alumno
+                    = inscripcion.getAlumno();
 
             System.out.println(
                     alumno.getNombre()
-                            + " "
-                            + alumno.getApellido()
-                            + " - CI: "
-                            + alumno.getCi()
+                    + " "
+                    + alumno.getApellido()
+                    + " - CI: "
+                    + alumno.getCi()
             );
         }
     }
 
     public boolean estaInscripto(Alumno a, Materia m) {
 
-    return inscripcionDAO.existeInscripcion(
-            a.getId(),
-            m.getId()
-    );
+        return inscripcionDAO.existeInscripcion(
+                a.getId(),
+                m.getId()
+        );
 
-}
+    }
+
+    public int cantidadInscriptosEnMateria(String codigo) throws MateriaNoEncontradaException {
+        // 1. Validaciones opcionales (por ejemplo, verificar si el id > 0)
+        MateriaDAO md = new MateriaDAO();
+        Materia m = md.buscarPorCodigo(codigo);
+        if (m == null) {
+            throw new MateriaNoEncontradaException();
+        }
+
+        // 2. Delegamos la lógica al DAO
+        return inscripcionDAO.contarInscriptosPorMateria(codigo);
+    }
 }

@@ -36,6 +36,12 @@ public class MenuPrincipal {
                 case 4:
                     menu.menuCalificaciones();
                     break;
+                case 5: 
+                    menu.menuConsultas();
+                    break;
+                default:
+                    System.out.println("error de opcion");
+                    
             }
         }while(opcion!=0);
 

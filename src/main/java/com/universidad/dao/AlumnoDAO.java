@@ -11,14 +11,12 @@ public class AlumnoDAO {
 
     public Alumno buscarPorId(int id) {
 
-        String sql =
-                "SELECT * FROM alumnos WHERE id = ?";
+        String sql
+                = "SELECT * FROM alumnos WHERE id = ?";
 
         try (
-                Connection conexion = ConexionDB.getConexion();
-                PreparedStatement stmt =
-                        conexion.prepareStatement(sql)
-        ) {
+                Connection conexion = ConexionDB.getConexion(); PreparedStatement stmt
+                = conexion.prepareStatement(sql)) {
 
             stmt.setInt(1, id);
 
@@ -26,20 +24,20 @@ public class AlumnoDAO {
 
             if (rs.next()) {
 
-                String nombre =
-                        rs.getString("nombre");
+                String nombre
+                        = rs.getString("nombre");
 
-                String apellido =
-                        rs.getString("apellido");
+                String apellido
+                        = rs.getString("apellido");
 
-                String ci =
-                        rs.getString("ci");
+                String ci
+                        = rs.getString("ci");
 
-                String fechaNacimiento =
-                        rs.getString("fecha_nacimiento");
+                String fechaNacimiento
+                        = rs.getString("fecha_nacimiento");
 
-                String email =
-                        rs.getString("email");
+                String email
+                        = rs.getString("email");
 
                 return new Alumno(
                         id,
@@ -246,39 +244,45 @@ public class AlumnoDAO {
         if (estado.equalsIgnoreCase("aprobado")) {
 
             sql = """
-        SELECT DISTINCT a.*
-        FROM alumnos a
-        INNER JOIN calificacion c
-        ON a.ci = c.ci_alumno
-        WHERE c.nota >= 6
-        """;
+            SELECT DISTINCT a.*
+            FROM alumnos a
+            INNER JOIN inscripciones i
+            ON a.ci = i.id_alumno
+            INNER JOIN calificaciones c
+            ON i.id = c.id_inscripcion
+            WHERE c.nota >= 6
+            """;
 
         } else if (estado.equalsIgnoreCase("desaprobado")) {
 
             sql = """
-        SELECT DISTINCT a.*
-        FROM alumnos a
-        INNER JOIN calificacion c
-        ON a.ci = c.ci_alumno
-        WHERE c.nota < 6
-        """;
+            SELECT DISTINCT a.*
+            FROM alumnos a
+            INNER JOIN inscripciones i
+            ON a.ci = i.id_alumno
+            INNER JOIN calificaciones c
+            ON i.id = c.id_inscripcion
+            WHERE c.nota < 6
+            """;
 
         } else if (estado.equalsIgnoreCase("sin calificacion")) {
 
             sql = """
-        SELECT a.*
-        FROM alumnos a
-        LEFT JOIN calificacion c
-        ON a.ci = c.ci_alumno
-        WHERE c.id IS NULL
-        """;
+            SELECT a.*
+            FROM alumnos a
+            INNER JOIN inscripciones i
+            ON a.ci = i.id_alumno
+            LEFT JOIN calificaciones c
+            ON i.id = c.id_inscripcion
+            WHERE c.id IS NULL
+            """;   
 
         }
 
         try (Connection con = ConexionDB.getConexion(); PreparedStatement ps = con.prepareStatement(sql)) {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                Alumno alumno = new Alumno(rs.getString("nombre"),rs.getString("apellido"),rs.getString("ci"),rs.getString("fecha_nacimiento"),rs.getString("email"));
+                Alumno alumno = new Alumno(rs.getString("nombre"), rs.getString("apellido"), rs.getString("ci"), rs.getString("fecha_nacimiento"), rs.getString("email"));
                 alumnos.add(alumno);
             }
         } catch (SQLException e) {

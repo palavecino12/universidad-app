@@ -10,7 +10,7 @@ import java.util.List;
 
 public class CalificacionesDAO {
 
-    public void crearCalificacion(Calificacion calificacion) {
+    public void crearCalificacion(Calificacion calificacion, int id) {
         String sql = """
                 INSERT INTO calificaciones
                 (id_inscripcion, nota, fecha)
@@ -20,7 +20,7 @@ public class CalificacionesDAO {
         try (Connection con = ConexionDB.getConexion(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setDouble(2, calificacion.getNota());
             ps.setString(3, calificacion.getFecha());
-            ps.setString(1, calificacion.getMateria().getCodigo());
+            ps.setInt(1, id);
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

@@ -15,11 +15,7 @@ public class GestorMaterias {
     }
 
     //METODOS
-    public Materia buscarPorId(int id) {
 
-        return materiaDAO.buscarPorId(id);
-
-    }
 
     public void registrarMateria(Materia materia) {
 
