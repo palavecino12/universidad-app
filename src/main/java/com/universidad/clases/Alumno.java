@@ -11,15 +11,7 @@ public class Alumno extends Persona implements Inscribible {
     private ArrayList<Materia> materiasInscriptas;
     private ArrayList<Calificacion> calificaciones;
 
-    /**
-     * Constructor para crear un alumno nuevo.
-     *
-     * No recibimos las listas porque un alumno nuevo todavía no tiene materias
-     * ni calificaciones.
-     *
-     * Las inicializamos vacías.
-     */
-    // Para crear un nuevo alumno
+    // Para crear un nuevo alumno (no recibe las listas porque un alumno nuevo no tiene materias ni calificaciones)
     public Alumno(String nombre, String apellido, String ci, String fechaNacimiento, String email) {
         super(nombre, apellido, ci);
 
@@ -42,7 +34,6 @@ public class Alumno extends Persona implements Inscribible {
     public String getFechaNacimiento() {
         return fechaNacimiento;
     }
-
     public void setFechaNacimiento(String fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
@@ -50,7 +41,6 @@ public class Alumno extends Persona implements Inscribible {
     public String getEmail() {
         return email;
     }
-
     public void setEmail(String email) {
         this.email = email;
     }
@@ -58,7 +48,6 @@ public class Alumno extends Persona implements Inscribible {
     public ArrayList<Materia> getMateriasInscriptas() {
         return materiasInscriptas;
     }
-
     public void setMateriasInscriptas(ArrayList<Materia> materiasInscriptas) {
         this.materiasInscriptas = materiasInscriptas;
     }
@@ -66,7 +55,6 @@ public class Alumno extends Persona implements Inscribible {
     public ArrayList<Calificacion> getCalificaciones() {
         return calificaciones;
     }
-
     public void setCalificaciones(ArrayList<Calificacion> calificaciones) {
         this.calificaciones = calificaciones;
     }
@@ -74,7 +62,6 @@ public class Alumno extends Persona implements Inscribible {
     public int getId() {
         return id;
     }
-
     public void setId(int id) {
         this.id = id;
     }
@@ -93,35 +80,25 @@ public class Alumno extends Persona implements Inscribible {
         System.out.println("\n----- Materias Inscriptas -----");
 
         if (materiasInscriptas.isEmpty()) {
-
             System.out.println("No posee materias inscriptas.");
-
         } else {
-
             for (Materia materia : materiasInscriptas) {
-
                 System.out.println("- " + materia.getNombre());
-
             }
         }
 
         System.out.println("\n----- Calificaciones -----");
 
         if (calificaciones.isEmpty()) {
-
             System.out.println("No posee calificaciones.");
-
         } else {
-
             for (Calificacion calificacion : calificaciones) {
-
                 System.out.println(
                         "- Materia: "
                         + calificacion.getMateria().getNombre()
                         + " | Nota: "
                         + calificacion.getNota()
                 );
-
             }
         }
 
@@ -148,9 +125,7 @@ public class Alumno extends Persona implements Inscribible {
 
         // Evitamos duplicados en la lista.
         if (!materiasInscriptas.contains(materia)) {
-
             materiasInscriptas.add(materia);
-
         }
     }
 
@@ -172,17 +147,11 @@ public class Alumno extends Persona implements Inscribible {
     public boolean estaInscripto(Materia materia) {
 
         for (Materia m : materiasInscriptas) {
-
             if (m.getCodigo().equals(materia.getCodigo())) {
-
                 return true;
-
             }
-
         }
-
         return false;
-
     }
 
     //Modificamos el metodo por defecto del objeto para poder mostrar la informacion mas facil mas adelante.
