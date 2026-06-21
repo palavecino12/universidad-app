@@ -184,10 +184,7 @@ public class Menu {
 
                 case 2:
                     System.out.print("Codigo de la materia: ");
-
-                    String codigoModificar
-                            = leer.next();
-
+                    String codigoModificar= leer.next();
                     Materia modificar = null;
                     try {
                         modificar = gestorMaterias.buscarPorCodigo(
@@ -227,12 +224,19 @@ public class Menu {
 
                 case 3:
                     System.out.print("Codigo: ");
-
-                    String codigoEliminar
-                            = leer.next();
-
+                    String codigoEliminar = leer.next();
                     try {
-                        gestorMaterias.eliminarMateria(codigoEliminar);
+                        Materia m = gestorMaterias.buscarPorCodigo(codigoEliminar);
+                        
+                        if (gestorInscripcion.cantidadInscriptosEnMateria(m.getCodigo()) != 0) {
+                            System.out.println("la materia cuenta con inscriptos, esta seguro? s/n");
+                            String opc = leer.next();
+                            if (opc.equalsIgnoreCase("s")) {
+                                gestorMaterias.eliminarMateria(codigoEliminar);
+                            }
+                        }else{
+                            gestorMaterias.eliminarMateria(codigoEliminar);
+                        }
                     } catch (MateriaNoEncontradaException e) {
                         System.out.println(e.getMessage());
                     }
@@ -255,8 +259,7 @@ public class Menu {
                             }
 
                             // Imprimimos la fila formateada
-                            System.out.println("Materia: " + m.getNombre()
-                                    + " | Alumnos inscriptos: " + total);
+                            System.out.println("Materia: " + m.getNombre()+ " | Alumnos inscriptos: " + total);
                         }
                     }
                     break;
@@ -364,26 +367,23 @@ public class Menu {
                         break;
                     }
 
-                    System.out.print(
-                            "¿Confirma la baja? (S/N): "
-                    );
+                    if (gestorInscripcion.validarCalificacion(alumnoBaja.getCi(), materiaBaja.getCodigo())) {
+                        System.out.print("¿Confirma la baja? (S/N): ");
+                        String respuesta = leer.next();
+                        if (respuesta.equalsIgnoreCase("S")) {
+                            gestorInscripcion.darDeBajaAlumno(alumnoBaja, materiaBaja);
+                        } else {
 
-                    String respuesta = leer.next();
+                            System.out.println(
+                                    "Operación cancelada."
+                            );
 
-                    if (respuesta.equalsIgnoreCase("S")) {
-
-                        gestorInscripcion.darDeBajaAlumno(
-                                alumnoBaja,
-                                materiaBaja
-                        );
-
-                    } else {
-
-                        System.out.println(
-                                "Operación cancelada."
-                        );
-
+                        }
+                    }else{
+                         gestorInscripcion.darDeBajaAlumno(alumnoBaja, materiaBaja);
+                         System.out.println("operacion realizada");
                     }
+
                     break;
 
                 case 3:
@@ -536,6 +536,7 @@ public class Menu {
 
     public void menuConsultas() {
         GestorAlumnos ga = new GestorAlumnos();
+        System.out.println("\n--- MENU CONSULTAS ---");
         System.out.println("1= buscar alumno por CI");
         System.out.println("2= buscar alumno por Nombre o apellido");
         System.out.println("3= buscar alumno por condicion");

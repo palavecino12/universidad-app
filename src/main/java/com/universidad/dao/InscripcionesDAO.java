@@ -142,6 +142,36 @@ public class InscripcionesDAO {
         return null;
     }
 
+    public boolean tieneCalificacion(String ci, String codigoMateria) {
+
+        String sql = """
+        SELECT COUNT(*) cantidad
+        FROM inscripciones i
+        INNER JOIN calificaciones c
+        ON i.id = c.id_inscripcion
+        WHERE i.id_alumno = ?
+        AND i.id_materia = ?
+        """;
+
+        try (
+                Connection con = ConexionDB.getConexion(); PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, ci);
+            ps.setString(2, codigoMateria);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("cantidad") > 0;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
     public List<Inscripcion> listarPorMateria(String codigo_materia) {
 
         List<Inscripcion> inscripciones

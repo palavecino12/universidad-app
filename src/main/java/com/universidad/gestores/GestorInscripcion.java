@@ -17,14 +17,21 @@ public class GestorInscripcion {
     public GestorInscripcion() {
         this.inscripcionDAO = new InscripcionesDAO();
     }
-    
+
     public Inscripcion buscarInscripcion(Alumno a, Materia m) {
-      Inscripcion i = inscripcionDAO.buscarInscripcion(a.getCi(), m.getCodigo());
+        Inscripcion i = inscripcionDAO.buscarInscripcion(a.getCi(), m.getCodigo());
         if (i == null) {
             System.out.println("La inscripcion no existe");
         }
         return i;
-    } 
+    }
+
+    public boolean validarCalificacion(String ci, String codigoMateria){
+        if (inscripcionDAO.tieneCalificacion(ci, codigoMateria)) {
+            return true;
+        }
+        return false;
+    }
 
     public boolean validarDuplicado(Alumno alumno, Materia materia) {
 
