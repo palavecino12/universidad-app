@@ -246,7 +246,6 @@ public class Menu {
                 case 1:
                     System.out.print("CI del alumno: ");
                     String ci = leer.next();
-
                     System.out.print("Código de la materia: ");
                     String codigo = leer.next();
 
@@ -264,20 +263,12 @@ public class Menu {
                     }
 
                     if (alumno == null) {
-
-                        System.out.println(
-                                "Alumno no encontrado."
-                        );
-
+                        System.out.println("Alumno no encontrado.");
                         break;
                     }
 
                     if (materia == null) {
-
-                        System.out.println(
-                                "Materia no encontrada."
-                        );
-
+                        System.out.println("Materia no encontrada.");
                         break;
                     }
                     gestorInscripcion.inscribirAlumno(alumno, materia);
@@ -305,20 +296,12 @@ public class Menu {
                     }
 
                     if (alumnoBaja == null) {
-
-                        System.out.println(
-                                "Alumno no encontrado."
-                        );
-
+                        System.out.println("Alumno no encontrado.");
                         break;
                     }
 
                     if (materiaBaja == null) {
-
-                        System.out.println(
-                                "Materia no encontrada."
-                        );
-
+                        System.out.println("Materia no encontrada.");
                         break;
                     }
 
