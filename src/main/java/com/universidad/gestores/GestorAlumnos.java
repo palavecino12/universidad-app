@@ -14,48 +14,20 @@ public class GestorAlumnos {
     private InscripcionesDAO inscripcionesDAO;
 
     public GestorAlumnos() {
-
         this.alumnoDAO = new AlumnoDAO();
         this.inscripcionesDAO = new InscripcionesDAO();
     }
 
     public Alumno buscarPorId(int id) {
-
         return alumnoDAO.buscarPorId(id);
-
     }
 
     public void registrarAlumno(Alumno alumno) throws AlumnoDuplicadoException {
-
         Alumno existente = alumnoDAO.buscarPorCI(alumno.getCi());
-
         if (existente != null) {
             throw new AlumnoDuplicadoException();
         }
-
         alumnoDAO.crearAlumno(alumno);
-    }
-
-    public void modificarAlumno(Alumno alumno) throws AlumnoNoEncontradoException {
-
-        Alumno existente = alumnoDAO.buscarPorCI(alumno.getCi());
-
-        if (existente == null) {
-            throw new AlumnoNoEncontradoException();
-        }
-
-        alumnoDAO.modificarAlumno(alumno);
-    }
-
-    public void eliminarAlumno(String ci) throws AlumnoNoEncontradoException {
-
-        Alumno existente = alumnoDAO.buscarPorCI(ci);
-
-        if (existente == null) {
-            throw new AlumnoNoEncontradoException();
-        }
-
-        alumnoDAO.eliminarAlumno(ci);
     }
 
     public Alumno buscarPorCI(String ci) throws AlumnoNoEncontradoException {
@@ -63,35 +35,44 @@ public class GestorAlumnos {
         if (existente == null) {
             throw new AlumnoNoEncontradoException();
         }
-        return alumnoDAO.buscarPorCI(ci);
-
+        return existente;
     }
 
     public List<Alumno> listarAlumnos() {
-
         return alumnoDAO.listarAlumnos();
-
     }
 
-    public List<Alumno> buscarPorNombreApellido(String texto) {
+    public void modificarAlumno(Alumno alumno) throws AlumnoNoEncontradoException {
+        Alumno existente = alumnoDAO.buscarPorCI(alumno.getCi());
+        if (existente == null) {
+            throw new AlumnoNoEncontradoException();
+        }
+        alumnoDAO.modificarAlumno(alumno);
+    }
 
-        return alumnoDAO.buscarPorNombreApellido(texto);
-
+    public void eliminarAlumno(String ci) throws AlumnoNoEncontradoException {
+        Alumno existente = alumnoDAO.buscarPorCI(ci);
+        if (existente == null) {
+            throw new AlumnoNoEncontradoException();
+        }
+        alumnoDAO.eliminarAlumno(ci);
     }
 
     public List<Alumno> listarPorEstadoAcademico(String estado) {
-
         return alumnoDAO.listarPorEstadoAcademico(estado);
-
     }
 
-    public boolean tieneInscripciones(String ci) {
+    public List<Alumno> buscarPorNombreApellido(String texto) {
+        return alumnoDAO.buscarPorNombreApellido(texto);
+    }
 
+    //Aca usamos un metodo del DAO de inscipciones para facilitar.
+    //Solo lo usamos en el caso donde al momento de eliminar un alumno tenemos que verificar si tiene inscripciones.
+    public boolean tieneInscripciones(String ci) {
         Alumno alumno = alumnoDAO.buscarPorCI(ci);
         if (alumno == null) {
             return false;
         }
-
         return inscripcionesDAO.tieneInscripciones(alumno.getId());
     }
 }

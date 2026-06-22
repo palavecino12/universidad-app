@@ -63,63 +63,44 @@ public class Menu {
                 case 2:
                     System.out.print("CI del alumno: ");
                     String ciModificar = leer.next();
-                    Alumno modificar = null;
+
                     try {
-                        modificar = gestorAlumnos.buscarPorCI(ciModificar);
-                    } catch (AlumnoNoEncontradoException ex) {
-                        System.out.println(ex.getMessage());
-                    }
-                    if (modificar != null) {
+                        Alumno modificar = gestorAlumnos.buscarPorCI(ciModificar);
+
                         System.out.print("Nuevo Nombre: ");
                         modificar.setNombre(leer.next());
                         System.out.print("Nuevo Apellido: ");
                         modificar.setApellido(leer.next());
                         System.out.print("Nuevo Email: ");
                         modificar.setEmail(leer.next());
-                        try {
-                            gestorAlumnos.modificarAlumno(modificar);
-                        } catch (AlumnoNoEncontradoException e) {
-                            System.out.println(e.getMessage());
-                        }
-                    } else {
-                        System.out.println("Alumno no encontrado");
-                    }
 
+                        gestorAlumnos.modificarAlumno(modificar);
+                        System.out.println("Alumno modificado con éxito.");
+
+                    } catch (AlumnoNoEncontradoException ex) {
+                        System.out.println(ex.getMessage());
+                    }
                     break;
 
                 case 3:
                     System.out.print("CI: ");
                     String ciEliminar = leer.next();
                     if (gestorAlumnos.tieneInscripciones(ciEliminar)) {
-
-                        System.out.println(
-                                "El alumno posee inscripciones."
-                        );
-
-                        System.out.print(
-                                "¿Desea eliminarlo igualmente? (S/N): "
-                        );
-
+                        System.out.println("El alumno posee inscripciones.");
+                        System.out.print("¿Desea eliminarlo igualmente? (S/N): ");
                         String respuesta = leer.next();
 
                         if (!respuesta.equalsIgnoreCase("S")) {
-
-                            System.out.println(
-                                    "Operación cancelada."
-                            );
-
+                            System.out.println("Operación cancelada.");
                             break;
                         }
                     }
 
                     try {
-                        gestorAlumnos.eliminarAlumno(
-                                ciEliminar
-                        );
+                        gestorAlumnos.eliminarAlumno(ciEliminar);
 
                     } catch (AlumnoNoEncontradoException e) {
                         System.out.println(e.getMessage());
-
                     }
                     break;
 
