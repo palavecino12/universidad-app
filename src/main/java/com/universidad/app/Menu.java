@@ -151,10 +151,8 @@ public class Menu {
 
                     System.out.print("Nombre: ");
                     String nombre = leer.nextLine();
-
                     System.out.print("Codigo: ");
                     String codigo = leer.nextLine();
-
                     System.out.print("Cupo maximo: ");
                     int cupo = leer.nextInt();
 
@@ -164,43 +162,23 @@ public class Menu {
                     break;
 
                 case 2:
-                    System.out.print("Codigo de la materia: ");
-                    String codigoModificar= leer.next();
-                    Materia modificar = null;
+                    System.out.print("Código de la materia: ");
+                    String codigoModificar = leer.next();
+                    leer.nextLine();
+
                     try {
-                        modificar = gestorMaterias.buscarPorCodigo(
-                                codigoModificar
-                        );
+                        Materia modificar = gestorMaterias.buscarPorCodigo(codigoModificar);
+
+                        System.out.print("Nuevo nombre: ");
+                        modificar.setNombre(leer.nextLine());
+                        System.out.print("Nuevo cupo máximo: ");
+                        modificar.setCupoMaximo(leer.nextInt());
+                        gestorMaterias.modificarMateria(modificar);
+                        System.out.println("Materia modificada con éxito.");
+
                     } catch (MateriaNoEncontradaException ex) {
                         System.out.println(ex.getMessage());
                     }
-
-                    if (modificar != null) {
-
-                        leer.nextLine();
-
-                        System.out.print("Nuevo nombre: ");
-                        modificar.setNombre(
-                                leer.nextLine()
-                        );
-
-                        System.out.print("Nuevo cupo maximo: ");
-                        modificar.setCupoMaximo(leer.nextInt());
-
-                        try {
-                            gestorMaterias.modificarMateria(modificar);
-                        } catch (MateriaNoEncontradaException e) {
-                            System.out.println(e.getMessage());
-                        }
-
-                    } else {
-
-                        System.out.println(
-                                "Materia no encontrada"
-                        );
-
-                    }
-
                     break;
 
                 case 3:
@@ -210,13 +188,10 @@ public class Menu {
                         Materia m = gestorMaterias.buscarPorCodigo(codigoEliminar);
                         
                         if (gestorInscripcion.cantidadInscriptosEnMateria(m.getCodigo()) != 0) {
-                            System.out.println("la materia cuenta con inscriptos, esta seguro? s/n");
-                            String opc = leer.next();
-                            if (opc.equalsIgnoreCase("s")) {
-                                gestorMaterias.eliminarMateria(codigoEliminar);
-                            }
+                            System.out.println("la materia cuenta con inscriptos, no puede ser eliminada");
                         }else{
                             gestorMaterias.eliminarMateria(codigoEliminar);
+                            System.out.println("la materia fue eliminada con exito");
                         }
                     } catch (MateriaNoEncontradaException e) {
                         System.out.println(e.getMessage());
@@ -239,8 +214,7 @@ public class Menu {
                                 System.out.println(ex.getMessage());
                             }
 
-                            // Imprimimos la fila formateada
-                            System.out.println("Materia: " + m.getNombre()+ " | Alumnos inscriptos: " + total);
+                            System.out.println("Materia: " + m.getNombre()+ " | Codigo: " +m.getCodigo()+ " | Alumnos inscriptos: " + total);
                         }
                     }
                     break;

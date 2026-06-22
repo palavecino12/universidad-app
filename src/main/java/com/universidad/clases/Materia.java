@@ -27,33 +27,21 @@ public class Materia {
         this.alumnosInscriptos = new ArrayList<>();
     }
 
-    public String getNombre() {
-        return nombre;
-    }
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
+    public String getNombre() {return nombre;}
+    public void setNombre(String nombre) {this.nombre = nombre;}
 
-    public String getCodigo() {
-        return codigo;
-    }
+    public String getCodigo() {return codigo;}
     public void setCodigo(String codigo) {
         this.codigo = codigo;
     }
 
-    public int getCupoMaximo() {
-        return cupoMaximo;
-    }
-    public void setCupoMaximo(int cupoMaximo) {
-        this.cupoMaximo = cupoMaximo;
-    }
+    public int getCupoMaximo() {return cupoMaximo;}
+    public void setCupoMaximo(int cupoMaximo) {this.cupoMaximo = cupoMaximo;}
 
     public ArrayList<Alumno> getAlumnosInscriptos() {
         return alumnosInscriptos;
     }
-    public void setAlumnosInscriptos(ArrayList<Alumno> alumnosInscriptos) {
-        this.alumnosInscriptos = alumnosInscriptos;
-    }
+    public void setAlumnosInscriptos(ArrayList<Alumno> alumnosInscriptos) {this.alumnosInscriptos = alumnosInscriptos;}
 
     public int getId() {
         return id;
@@ -62,14 +50,11 @@ public class Materia {
         this.id = id;
     }
 
-    public int getCupoDisponible() {
-        return cupoMaximo - alumnosInscriptos.size();
-    }
+    public int getCupoDisponible() {return cupoMaximo - alumnosInscriptos.size();}
+    public boolean tieneCupo() {return getCupoDisponible() > 0;}
 
-    public boolean tieneCupo() {
-        return getCupoDisponible() > 0;
-    }
-
+    //No se usa porque este array siempre esta vacio,
+    //(Podriamos traer los alumnos inscriptos del metodo gestorInscripcion.cantidadInscriptosEnMateria())
     public void mostrarAlumnosInscriptos() {
         if (alumnosInscriptos.isEmpty()) {
             System.out.println("No hay alumnos inscriptos.");

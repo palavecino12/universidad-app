@@ -15,41 +15,13 @@ public class GestorMaterias {
     }
 
     //METODOS
-
-
     public void registrarMateria(Materia materia) {
-
         Materia existente = materiaDAO.buscarPorCodigo(materia.getCodigo());
         if (existente != null) {
             System.out.println("Ya existe una materia con ese código.");
             return;
         }
         materiaDAO.crearMateria(materia);
-    }
-
-    public void modificarMateria(Materia materia) throws MateriaNoEncontradaException {
-
-        Materia existente = materiaDAO.buscarPorCodigo(materia.getCodigo());
-        if (existente == null) {
-            throw new MateriaNoEncontradaException();
-        }
-        materiaDAO.modificarMateria(materia);
-    }
-
-    public void eliminarMateria(String codigo) throws MateriaNoEncontradaException {
-
-        Materia existente = materiaDAO.buscarPorCodigo(codigo);
-        if (existente == null) {
-            throw new MateriaNoEncontradaException();
-        }
-        // TODO:
-        // En la etapa de inscripciones verificar
-        // que no existan alumnos inscriptos.
-        materiaDAO.eliminarMateria(codigo);
-    }
-
-    public List<Materia> listarMaterias() {
-        return materiaDAO.listarMaterias();
     }
 
     public Materia buscarPorCodigo(String codigo) throws MateriaNoEncontradaException {
@@ -59,5 +31,29 @@ public class GestorMaterias {
         }
         return materiaDAO.buscarPorCodigo(codigo);
     }
+
+    public List<Materia> listarMaterias() {
+        return materiaDAO.listarMaterias();
+    }
+
+    public void modificarMateria(Materia materia) throws MateriaNoEncontradaException {
+        Materia existente = materiaDAO.buscarPorCodigo(materia.getCodigo());
+        if (existente == null) {
+            throw new MateriaNoEncontradaException();
+        }
+        materiaDAO.modificarMateria(materia);
+    }
+
+    public void eliminarMateria(String codigo) throws MateriaNoEncontradaException {
+        Materia existente = materiaDAO.buscarPorCodigo(codigo);
+        if (existente == null) {
+            throw new MateriaNoEncontradaException();
+        }
+        materiaDAO.eliminarMateria(codigo);
+    }
+
+
+
+
 
 }
