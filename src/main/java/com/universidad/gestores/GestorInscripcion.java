@@ -41,8 +41,6 @@ public class GestorInscripcion {
 
         Inscripcion inscripcion = new Inscripcion(alumno, materia, LocalDate.now().toString());
         inscripcionDAO.crearInscripcion(inscripcion);
-
-        System.out.println("Inscripción realizada correctamente.");
     }
 
     public void darDeBajaAlumno(Alumno alumno, Materia materia) {

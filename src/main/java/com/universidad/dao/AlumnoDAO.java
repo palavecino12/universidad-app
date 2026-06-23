@@ -14,9 +14,7 @@ public class AlumnoDAO {
         String sql = "SELECT * FROM alumnos WHERE id = ?";
 
         try (
-                Connection conexion = ConexionDB.getConexion();
-                PreparedStatement stmt = conexion.prepareStatement(sql)
-        ) {
+                Connection conexion = ConexionDB.getConexion(); PreparedStatement stmt = conexion.prepareStatement(sql)) {
             stmt.setInt(1, id);
 
             ResultSet rs = stmt.executeQuery();
@@ -66,9 +64,7 @@ public class AlumnoDAO {
 
         String sql = "SELECT * FROM alumnos WHERE ci=?";
 
-        try (Connection con = ConexionDB.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)
-        ) {
+        try (Connection con = ConexionDB.getConexion(); PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, ci);
 
@@ -98,9 +94,7 @@ public class AlumnoDAO {
 
         String sql = "SELECT * FROM alumnos";
 
-        try (Connection con = ConexionDB.getConexion();
-             Statement st = con.createStatement()
-        ) {
+        try (Connection con = ConexionDB.getConexion(); Statement st = con.createStatement()) {
 
             ResultSet rs = st.executeQuery(sql);
 
@@ -125,9 +119,7 @@ public class AlumnoDAO {
 
         String sql = "UPDATE alumnos SET nombre=?, apellido=?, email=? WHERE ci=?";
 
-        try (Connection con = ConexionDB.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)
-        ) {
+        try (Connection con = ConexionDB.getConexion(); PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, alumno.getNombre());
             ps.setString(2, alumno.getApellido());
@@ -145,9 +137,7 @@ public class AlumnoDAO {
 
         String sql = "DELETE FROM alumnos WHERE ci=?";
 
-        try (Connection con = ConexionDB.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)
-        ) {
+        try (Connection con = ConexionDB.getConexion(); PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, ci);
 
@@ -165,9 +155,7 @@ public class AlumnoDAO {
 
         String sql = "SELECT * FROM alumnos WHERE LOWER(nombre) LIKE ? OR LOWER(apellido) LIKE ?";
 
-        try (Connection con = ConexionDB.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)
-        ) {
+        try (Connection con = ConexionDB.getConexion(); PreparedStatement ps = con.prepareStatement(sql)) {
 
             String busqueda = "%" + texto.toLowerCase() + "%";
             ps.setString(1, busqueda);
@@ -228,13 +216,11 @@ public class AlumnoDAO {
             LEFT JOIN calificaciones c
             ON i.id = c.id_inscripcion
             WHERE c.id IS NULL
-            """;   
+            """;
 
         }
 
-        try (Connection con = ConexionDB.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)
-        ) {
+        try (Connection con = ConexionDB.getConexion(); PreparedStatement ps = con.prepareStatement(sql)) {
 
             ResultSet rs = ps.executeQuery();
 
@@ -253,5 +239,8 @@ public class AlumnoDAO {
         return alumnos;
 
     }
+
+   
+    /**/
 
 }

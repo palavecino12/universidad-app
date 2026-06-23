@@ -16,9 +16,7 @@ public class InscripcionesDAO {
         String sql = "INSERT INTO inscripciones (id_alumno, id_materia, fecha_inscripcion) VALUES (?, ?, ?)";
 
         try (
-                Connection conexion = ConexionDB.getConexion();
-                PreparedStatement stmt = conexion.prepareStatement(sql)
-        ) {
+                Connection conexion = ConexionDB.getConexion(); PreparedStatement stmt = conexion.prepareStatement(sql)) {
 
             stmt.setInt(1, inscripcion.getAlumno().getId());
             stmt.setInt(2, inscripcion.getMateria().getId());
@@ -41,9 +39,7 @@ public class InscripcionesDAO {
                 + "AND id_materia = ?";
 
         try (
-                Connection conexion = ConexionDB.getConexion();
-                PreparedStatement stmt = conexion.prepareStatement(sql)
-        ) {
+                Connection conexion = ConexionDB.getConexion(); PreparedStatement stmt = conexion.prepareStatement(sql)) {
 
             stmt.setInt(1, idAlumno);
             stmt.setInt(2, idMateria);
@@ -69,9 +65,7 @@ public class InscripcionesDAO {
                 + "AND id_materia = ?";
 
         try (
-                Connection conexion = ConexionDB.getConexion();
-                PreparedStatement stmt = conexion.prepareStatement(sql)
-        ) {
+                Connection conexion = ConexionDB.getConexion(); PreparedStatement stmt = conexion.prepareStatement(sql)) {
 
             stmt.setString(1, idAlumno);
             stmt.setString(2, codigo_materia);
@@ -108,9 +102,7 @@ public class InscripcionesDAO {
         """;
 
         try (
-                Connection con = ConexionDB.getConexion();
-                PreparedStatement ps = con.prepareStatement(sql)
-        ) {
+                Connection con = ConexionDB.getConexion(); PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, ci);
             ps.setString(2, codigoMateria);
@@ -137,9 +129,7 @@ public class InscripcionesDAO {
                 + "WHERE id_materia = ?";
 
         try (
-                Connection conexion = ConexionDB.getConexion();
-                PreparedStatement stmt = conexion.prepareStatement(sql)
-        ) {
+                Connection conexion = ConexionDB.getConexion(); PreparedStatement stmt = conexion.prepareStatement(sql)) {
 
             stmt.setString(1, codigo_materia);
 
@@ -174,9 +164,7 @@ public class InscripcionesDAO {
         String sql = "SELECT * FROM inscripciones WHERE id_alumno = ? AND id_materia = ?";
 
         try (
-                Connection conexion = ConexionDB.getConexion();
-                PreparedStatement stmt = conexion.prepareStatement(sql)
-        ) {
+                Connection conexion = ConexionDB.getConexion(); PreparedStatement stmt = conexion.prepareStatement(sql)) {
 
             stmt.setInt(1, idAlumno);
             stmt.setInt(2, idMateria);
@@ -228,15 +216,15 @@ public class InscripcionesDAO {
                 + "WHERE id_alumno = ?";
 
         try (
-                Connection conexion = ConexionDB.getConexion();
-                PreparedStatement stmt = conexion.prepareStatement(sql)
-        ) {
+                Connection conexion = ConexionDB.getConexion(); PreparedStatement stmt = conexion.prepareStatement(sql)) {
 
             stmt.setInt(1, idAlumno);
 
             ResultSet rs = stmt.executeQuery();
 
-            if (rs.next()) {return rs.getInt(1) > 0;}
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -245,14 +233,55 @@ public class InscripcionesDAO {
         return false;
     }
 
+    public List<Materia> inscriptoMaterias(String ciAlumno) {
+
+        List<Materia> materias = new ArrayList<>();
+
+        String sql = """
+        SELECT m.*
+        FROM inscripciones i
+        INNER JOIN materias m
+        ON i.id_materia = m.id
+        WHERE i.id_alumno = ?
+        """;
+
+        try (
+                Connection conexion = ConexionDB.getConexion(); PreparedStatement stmt = conexion.prepareStatement(sql)) {
+
+            stmt.setString(1, ciAlumno);
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+
+                int id = rs.getInt("id");
+                String nombre = rs.getString("nombre");
+                String codigoMateria = rs.getString("codigo");
+                int cupo = rs.getInt("cupo_maximo");
+
+                Materia m = new Materia(
+                        id,
+                        nombre,
+                        codigoMateria,
+                        cupo
+                );
+
+                materias.add(m);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return materias;
+    }
+
     public int contarInscriptosPorMateria(String codigo) {
 
         String sql = "SELECT COUNT(*) FROM inscripciones WHERE id_materia = ?";
 
         try (
-                Connection con = ConexionDB.getConexion();
-                PreparedStatement ps = con.prepareStatement(sql)
-        ) {
+                Connection con = ConexionDB.getConexion(); PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, codigo);
 
@@ -278,9 +307,7 @@ public class InscripcionesDAO {
         """;
 
         try (
-                Connection con = ConexionDB.getConexion();
-                PreparedStatement ps = con.prepareStatement(sql)
-        ) {
+                Connection con = ConexionDB.getConexion(); PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, idAlumno);
             ps.setString(2, idMateria);

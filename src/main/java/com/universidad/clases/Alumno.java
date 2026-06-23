@@ -3,107 +3,100 @@ package com.universidad.clases;
 import com.universidad.interfaces.Inscribible;
 import java.util.ArrayList;
 
-public class Alumno extends Persona implements Inscribible {
+  
 
-    private int id;
-    private String fechaNacimiento;
-    private String email;
-    private ArrayList<Materia> materiasInscriptas;
-    private ArrayList<Calificacion> calificaciones;
+    public class Alumno extends Persona implements Inscribible {
 
-    // Para crear un nuevo alumno (no recibe las listas porque un alumno nuevo no tiene materias ni calificaciones)
-    public Alumno(String nombre, String apellido, String ci, String fechaNacimiento, String email) {
-        super(nombre, apellido, ci);
+        private int id;
+        private String fechaNacimiento;
+        private String email;
+        private ArrayList<Materia> materiasInscriptas;
+        private ArrayList<Calificacion> calificaciones;
 
-        this.fechaNacimiento = fechaNacimiento;
-        this.email = email;
-        this.materiasInscriptas = new ArrayList<>();
-        this.calificaciones = new ArrayList<>();
-    }
+        // Para crear un nuevo alumno (no recibe las listas porque un alumno nuevo no tiene materias ni calificaciones)
+        public Alumno(String nombre, String apellido, String ci, String fechaNacimiento, String email) {
+            super(nombre, apellido, ci);
 
-    // Para traer un alumno desde la BD
-    public Alumno(int id, String nombre, String apellido, String ci, String fechaNacimiento, String email) {
-        super(nombre, apellido, ci);
-        this.id = id;
-        this.fechaNacimiento = fechaNacimiento;
-        this.email = email;
-        this.materiasInscriptas = new ArrayList<>();
-        this.calificaciones = new ArrayList<>();
-    }
-
-    public String getFechaNacimiento() {
-        return fechaNacimiento;
-    }
-    public void setFechaNacimiento(String fechaNacimiento) {
-        this.fechaNacimiento = fechaNacimiento;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public ArrayList<Materia> getMateriasInscriptas() {
-        return materiasInscriptas;
-    }
-    public void setMateriasInscriptas(ArrayList<Materia> materiasInscriptas) {
-        this.materiasInscriptas = materiasInscriptas;
-    }
-
-    public ArrayList<Calificacion> getCalificaciones() {
-        return calificaciones;
-    }
-    public void setCalificaciones(ArrayList<Calificacion> calificaciones) {
-        this.calificaciones = calificaciones;
-    }
-
-    public int getId() {
-        return id;
-    }
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    @Override
-    public void mostrarInfo() {
-
-        System.out.println("\n===== INFORMACIÓN DEL ALUMNO =====");
-
-        System.out.println("Nombre: " + getNombre());
-        System.out.println("Apellido: " + getApellido());
-        System.out.println("CI: " + getCi());
-        System.out.println("Fecha de nacimiento: " + fechaNacimiento);
-        System.out.println("Email: " + email);
-
-        System.out.println("\n----- Materias Inscriptas -----");
-
-        if (materiasInscriptas.isEmpty()) {
-            System.out.println("No posee materias inscriptas.");
-        } else {
-            for (Materia materia : materiasInscriptas) {
-                System.out.println("- " + materia.getNombre());
-            }
+            this.fechaNacimiento = fechaNacimiento;
+            this.email = email;
+            this.materiasInscriptas = new ArrayList<>();
+            this.calificaciones = new ArrayList<>();
         }
 
-        System.out.println("\n----- Calificaciones -----");
-
-        if (calificaciones.isEmpty()) {
-            System.out.println("No posee calificaciones.");
-        } else {
-            for (Calificacion calificacion : calificaciones) {
-                System.out.println(
-                        "- Materia: "
-                        + calificacion.getMateria().getNombre()
-                        + " | Nota: "
-                        + calificacion.getNota()
-                );
-            }
+        // Para traer un alumno desde la BD
+        public Alumno(int id, String nombre, String apellido, String ci, String fechaNacimiento, String email) {
+            super(nombre, apellido, ci);
+            this.id = id;
+            this.fechaNacimiento = fechaNacimiento;
+            this.email = email;
+            this.materiasInscriptas = new ArrayList<>();
+            this.calificaciones = new ArrayList<>();
         }
 
-        System.out.println("================================");
-    }
+        public String getFechaNacimiento() {
+            return fechaNacimiento;
+        }
+
+        public void setFechaNacimiento(String fechaNacimiento) {
+            this.fechaNacimiento = fechaNacimiento;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+
+        public ArrayList<Materia> getMateriasInscriptas() {
+            return materiasInscriptas;
+        }
+
+        public void setMateriasInscriptas(ArrayList<Materia> materiasInscriptas) {
+            this.materiasInscriptas = materiasInscriptas;
+        }
+
+        public ArrayList<Calificacion> getCalificaciones() {
+            return calificaciones;
+        }
+
+        public void setCalificaciones(ArrayList<Calificacion> calificaciones) {
+            this.calificaciones = calificaciones;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        @Override
+        public void mostrarInfo() {
+
+            System.out.println("\n===== INFORMACIÓN DEL ALUMNO =====");
+
+            System.out.println("Nombre: " + getNombre());
+            System.out.println("Apellido: " + getApellido());
+            System.out.println("CI: " + getCi());
+            System.out.println("Fecha de nacimiento: " + fechaNacimiento);
+            System.out.println("Email: " + email);
+
+            System.out.println("\n----- Materias Inscriptas -----");
+
+            if (materiasInscriptas.isEmpty()) {
+                System.out.println("No posee materias inscriptas.");
+            } else {
+                for (Materia materia : materiasInscriptas) {
+                    System.out.println("- " + materia.getNombre());
+                }
+            }
+
+            System.out.println("\n----- Calificaciones -----");
+
+        }
 
     // ===========================
     // MÉTODOS DE LA INTERFAZ

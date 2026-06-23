@@ -9,7 +9,7 @@ public class MenuPrincipal {
     public void Iniciar() {
         Scanner leer = new Scanner(System.in);
         int opcion;
-
+       
         do {
             System.out.println("===== SISTEMA UNIVERSITARIO =====\n"
                     + "\n"
@@ -38,6 +38,9 @@ public class MenuPrincipal {
                     break;
                 case 5: 
                     menu.menuConsultas();
+                    break;
+                case 0:
+                    System.out.println("Adios");
                     break;
                 default:
                     System.out.println("error de opcion");

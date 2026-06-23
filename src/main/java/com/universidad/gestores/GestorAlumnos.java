@@ -1,6 +1,7 @@
 package com.universidad.gestores;
 
 import com.universidad.clases.Alumno;
+import com.universidad.clases.Materia;
 import com.universidad.dao.AlumnoDAO;
 import com.universidad.dao.InscripcionesDAO;
 import com.universidad.exceptions.AlumnoDuplicadoException;
@@ -75,4 +76,9 @@ public class GestorAlumnos {
         }
         return inscripcionesDAO.tieneInscripciones(alumno.getId());
     }
+    
+    public List<Materia> inscriptoMaterias(String ciAlumno){
+        return inscripcionesDAO.inscriptoMaterias(ciAlumno);
+    }
+    
 }
